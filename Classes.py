@@ -89,7 +89,7 @@ class Weapon(Item):
 
         for i in range(1, 5):
 
-        return modifiers
+            return modifiers
 
     def generate_name(self, modifiers):
         name = 'GenericItem' + str(Item.item_index)     # Placeholder
