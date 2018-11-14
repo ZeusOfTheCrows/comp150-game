@@ -8,6 +8,9 @@ import ImageFiles
 
 
 class Room:
+    """
+    Base class for all rooms, all other rooms should inherit from this.
+    """
     room_index = 0
 
     # create dictionary for lane positions
@@ -18,21 +21,40 @@ class Room:
 
 
 class RoomTutorial(Room):
-
+    """
+    Tutorial room, will be scripted rather than randomised
+    """
     current_stage = 0
     tutorial_stages = 3
+    prevRoom = None
+    nextRoom = None
 
-    def __init__(self):
-        Room.__init__(self)
-        self.texture = ImageFiles.images['Rooms']['Tutorial']
-        # Use this in the regular enemy and boss rooms
-        self.lanes = dict()
-        self.lanes['left'] = Lane(150, 150, 'left')
-        self.lanes['centre'] = Lane(375, 150, 'centre')
-        self.lanes['right'] = Lane(600, 150, 'right')
+    def __init__(self, pos_x, pos_y):
+        if RoomTutorial.current_stage <= RoomTutorial.tutorial_stages:
+            # add code for room transition
+            Room.__init__(self)
+            RoomTutorial.current_stage += 1
+            self.texture = ImageFiles.images['Rooms']['Tutorial']
+            self.pos = []
+            self.pos[0] = pos_x
+            self.pos[1] = pos_y
+            # Use this in the regular enemy and boss rooms
+            self.lanes = dict()
+            self.lanes['left'] = Lane(150, 150, 'left')
+            self.lanes['centre'] = Lane(375, 150, 'centre')
+            self.lanes['right'] = Lane(600, 150, 'right')
+        else:
+            # add code for completing tutorial
+            pass
 
     @staticmethod
     def create_tutorial_room(enemies=random.randint(1, 3)):
+        """
+        Paul can write this when he wants to die less
+        :param enemies: Number of enemies to generate. Can be specified
+                                manually, will be randomised otherwise.
+        :return:
+        """
         room = RoomTutorial()
 
         if enemies > 0:
@@ -48,7 +70,8 @@ class RoomTutorial(Room):
             enemies -= 1
 
 
-class Lane():
+class Lane:
+    """Legacy, to be purged."""
     def __init__(self, origin_x, origin_y, key, is_occupied=False):
         self.occupied = is_occupied
         self.occupant = None
@@ -61,18 +84,23 @@ class Lane():
 
 
 class RoomEncounter(Room):
-    def __init__(self, room_type = random.randint(1, 4)):
+    """
+    Room with an encounter, will be used later.
+    """
+    def __init__(self, room_type=random.randint(1, 4)):
         Room.__init__(self)
 
 
 class RoomEnemy(Room):
-
+    """
+    Most used room, normal room with enemies in.
+    """
     def __init__(self):
         Room.__init__(self)
 
 
 class RoomBoss(Room):
-
+    """Boss room, will be a room with a boss."""
     def __init__(self):
         Room.__init__(self)
 

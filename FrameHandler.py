@@ -8,14 +8,23 @@ import ImageFiles
 import Projectile
 import datetime
 import TimeOfDay
+import pickle
 from pygame.locals import *
 
 pygame.time.set_timer(Helper.UPDATETIME, Helper.t)
 
 
+def save_game(player):
+    save_data = player
+    print('Saving game...')
+    pickle.dump(save_data, open("savegame.p", "wb"))
+
+
 def event_handler(game_state, player):
     now = datetime.datetime.now()
     player_action = 'idle'
+    if Entity.Enemy.numberOfOnscreenEnemies == 0:
+        save_game(player)
     for event in pygame.event.get():
         if event.type == Helper.UPDATETIME:
             TimeOfDay.TimeOfDay.update_time_of_day(now)
@@ -27,7 +36,8 @@ def event_handler(game_state, player):
             elif event.key == K_g and Entity.Enemy.numberOfOnscreenEnemies < 3:
                 Entity.enemy_list.append(Entity.Enemy())
             elif event.key == K_h and Entity.Enemy.numberOfOnscreenEnemies > 0:
-                Entity.enemy_list.clear()
+                for enemy in Entity.enemy_list:
+                    enemy.__del__()
             elif event.key == K_w and not Player.Player.is_moving:
                 if len(Entity.enemy_list) == 0:
                     Player.Player.isLeavingRoom = True

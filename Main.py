@@ -5,7 +5,7 @@ import Entity
 import ImageFiles
 import Helper
 import Menu
-import Inputs
+import pickle
 import Player
 import MapGenerator
 from pygame.locals import *
@@ -32,13 +32,16 @@ running = True
 while running:
 
     while game_state == 'Main_Menu':
-        game_state = Menu.menu_update()
+        game_state, loaded_data = Menu.menu_update()
 
     while game_state == 'Settings':
         game_state = Menu.settings_menu_update()
 
     while game_state == 'New_Game':
         # event handling section
+        if loaded_data:
+            aux_player = loaded_data
+            print(aux_player.health)
         player_action, game_state = FrameHandler.event_handler(
             game_state,
             player)
