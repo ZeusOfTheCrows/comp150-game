@@ -2,6 +2,7 @@ import pygame
 import sys
 import Helper
 import MenuHelper
+import pickle
 from pygame.locals import *
 
 pygame.init()
@@ -85,11 +86,11 @@ def check_buttons(click_pos, save_file_exists):
 
     if buttons['buttonQuit'].collidepoint(click_pos):
         print("Button clicked: Quit")
-        return 'Quit'
+        return 'Quit', None
 
     elif buttons['buttonNewGame'].collidepoint(click_pos):
         print("Button clicked: New Game")
-        return 'New_Game'
+        return 'New_Game', None
 
     elif buttons['buttonContinue'].collidepoint(click_pos):
         if save_file_exists:
@@ -97,12 +98,11 @@ def check_buttons(click_pos, save_file_exists):
             # return 'Continue'
         else:
             print("Button clicked: Continue. However, save file not found.")
-
     elif buttons['buttonSettings'].collidepoint(click_pos):
         print("Button clicked: Settings")
-        return 'Settings'
+        return 'Settings', None
 
-    return 'Main_Menu'
+    return 'Main_Menu', None
 
 
 def check_settings_buttons(click_pos):
