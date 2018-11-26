@@ -28,7 +28,15 @@ buttons = dict(
     )
 
 
-def draw_menu(save_file_exists):  # Draws rectangles to represent the 'buttons'
+def draw_menu(continue_button_clickable):
+    """
+    ===========================================================================
+    Draws rectangles to represent the buttons
+    :param continue_button_clickable: greys out continue button if there
+                                                is no existing save file
+    ===========================================================================
+    """
+
     pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['buttonNewGame'])
     DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_NEWGAME, (130, 484))
 
@@ -38,20 +46,25 @@ def draw_menu(save_file_exists):  # Draws rectangles to represent the 'buttons'
     pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['buttonQuit'])
     DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_QUIT, (510, 684))
 
-    if save_file_exists:
+    if continue_button_clickable:
         pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['buttonContinue'])
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_CONTINUE, (480, 484))
 
-    elif not save_file_exists:
+    elif not continue_button_clickable:
         pygame.draw.rect(DISPLAY_SURFACE, DARK_GRAY, buttons['buttonContinue'])
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_BLACKCONTINUE, (480, 484))
 
-    else:
-        raise ValueError('\'save_file_exists\' is neither true nor false.'\
+    else:  # todo: remove debug code? @joycourier
+        raise ValueError('\'save_file_exists\' is neither true nor false.'
                          'This is not Schrodinger\'s save_file, fix it.')
 
 
 def draw_settings_menu():
+    """
+    ===========================================================================
+    Draws rectangles to represent the setting menu background and back button.
+    ===========================================================================
+    """
     pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['settingsBackground'])
     DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_DESPACITO, (625, 940))
 
@@ -61,11 +74,15 @@ def draw_settings_menu():
 
 def check_buttons(click_pos, save_file_exists):
     """
-    Checks which 'button' was clicked,
-    can assign functions to each separate button
-    Arguments:
-        click_pos -- position of the mouse click
+    ===========================================================================
+    Checks which 'button' was clicked, can assign
+        functions to each separate button.
+    :param click_pos: position of the mouse click
+    :param save_file_exists: whether a previous save file exists
+    :return: the game state (as a string)
+    ===========================================================================
     """
+
     if buttons['buttonQuit'].collidepoint(click_pos):
         print("Button clicked: Quit")
         return 'Quit'
@@ -96,35 +113,60 @@ def check_settings_buttons(click_pos):
     return 'Settings'
 
 
-def highlight_buttons(mx, my, save_file_exists):  # Draws a highlight over a button on mouse-over
+def highlight_buttons(mouse_x, mouse_y, make_continue_clickable):
+    """
+    ===========================================================================
+    Draws a highlight over a button on mouse-over.
 
-    if buttons['buttonNewGame'].collidepoint(mx, my):
+    :param mouse_x: current mouse horizontal position (not click)
+    :param mouse_y: current mouse vertical position (not click)
+    :param make_continue_clickable: makes continue button unclickable
+                                            if save file des not exist
+    ===========================================================================
+    """
+
+    if buttons['buttonNewGame'].collidepoint(mouse_x, mouse_y):
         pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['buttonNewGame'])
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHNEWGAME, (130, 484))
 
-    elif buttons['buttonContinue'].collidepoint(mx, my):
-        if save_file_exists:
+    elif buttons['buttonContinue'].collidepoint(mouse_x, mouse_y):
+        if make_continue_clickable:
             pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['buttonContinue'])
             DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHCONTINUE, (480, 484))
 
-    elif buttons['buttonSettings'].collidepoint(mx, my):
+    elif buttons['buttonSettings'].collidepoint(mouse_x, mouse_y):
         pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['buttonSettings'])
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHSETTINGS, (130, 684))
 
-    elif buttons['buttonQuit'].collidepoint(mx, my):
+    elif buttons['buttonQuit'].collidepoint(mouse_x, mouse_y):
         pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['buttonQuit'])
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHQUIT, (510, 684))
 
 
-def highlight_settings_buttons(mx, my):  # Draws a highlight over a button on mouse-over
-    if buttons['settingsExit'].collidepoint(mx, my):
+def highlight_settings_buttons(mouse_x, mouse_y):
+    """
+    ===========================================================================
+    Draws a highlight over a button on mouse-over.
+    :param mouse_x: current mouse horizontal position (not click)
+    :param mouse_y: current mouse vertical position (not click)
+    ===========================================================================
+    """
+
+    if buttons['settingsExit'].collidepoint(mouse_x, mouse_y):
         pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['settingsExit'])
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHSETTINGSEXIT, (80, 910))
 
 
 def menu_update():
+    """
+    ===========================================================================
+    todo: fill this in.
+        Also, why is there a while loop outside of the main loop @joycourier?
+    ===========================================================================
+    """
+
     (mouse_x, mouse_y) = (0, 0)
-    save_file_exists = False
+    save_file_exists = False  # todo: this needs to be a real check @joycourier
     while True:
         DISPLAY_SURFACE.fill(BLACK)
         draw_menu(save_file_exists)
@@ -139,7 +181,6 @@ def menu_update():
 
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    print('Key pressed: Escape - Closing game...')
                     pygame.quit()
                     sys.exit()
 
@@ -154,6 +195,13 @@ def menu_update():
 
 
 def settings_menu_update():
+    """
+    ===========================================================================
+    todo: fill this in.
+        Also, why is there a while loop outside of the main loop @joycourier?
+    ===========================================================================
+    """
+
     (mouse_x, mouse_y) = (0, 0)
     while True:
         DISPLAY_SURFACE.fill(BLACK)
@@ -170,7 +218,6 @@ def settings_menu_update():
 
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    print('Key pressed: Escape - Exiting menu...')
                     return 'Main_Menu'
 
             # check if a button was clicked on mouse click

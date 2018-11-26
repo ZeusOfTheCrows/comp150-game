@@ -12,10 +12,11 @@ from pygame.locals import *
 pygame.time.set_timer(Helper.UPDATETIME, Helper.t)
 
 
-def event_handler(game_state, player):
+def event_handler(game_state, player):  # todo: remove parameter?
     """
     ===========================================================================
     Handles keyboard/mouse inputs. Called every frame.
+
     :param game_state: current state as a string (ie. Main_Menu, Settings, etc)
     :param player: current instance of player class (should only be one)
     :return: input action (ie, moving left or right), new game_state
@@ -40,7 +41,7 @@ def event_handler(game_state, player):
                 if len(Entity.enemy_list) == 0:
                     Player.Player.isLeavingRoom = True
         elif event.type == MOUSEBUTTONDOWN:
-            player_action = Inputs.read_mouse_movements(event.pos, player)
+            player_action = Inputs.read_mouse_movements(event.pos)
     return player_action, game_state
 
 
@@ -49,6 +50,7 @@ def update(player, player_action):
     ===========================================================================
     Calls update functions for player, enemies, and projectiles.
         Called every frame.
+
     :param player: current instance of player class
     :param player_action: input action, as defined in event_handler()
     ===========================================================================

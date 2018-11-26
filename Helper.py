@@ -1,5 +1,21 @@
 import pygame
 
+# todo: docstrings in
+'''
+Audio
+AudioFiles
+Helper
+ImageFiles
+Item
+MapGenerator
+Menu
+MenuHelper
+Player
+Projectile
+Room
+TimeOfDay
+'''
+
 REFRESH_RATE = 60
 RESOLUTION = (750, 1334)
 DISPLAY_SURFACE = pygame.display.set_mode(RESOLUTION)

@@ -71,7 +71,12 @@ finished = False
 
 
 def run_separator():
-    separate_tiles(tilemap_size_x, tilemap_size_y, tilemap, tile_path, tile_index)
+    separate_tiles(tilemap_size_x,
+                   tilemap_size_y,
+                   tilemap,
+                   tile_path,
+                   tile_index
+                   )
 
 
 def run_remover():

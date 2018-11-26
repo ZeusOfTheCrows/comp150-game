@@ -3,6 +3,7 @@ import Helper
 
 pygame.init()
 
+# Initialising video mode for convert_alpha() function
 screen = pygame.display.set_mode(Helper.RESOLUTION, 0, 32)
 
 images = dict()
@@ -71,10 +72,6 @@ images['Rooms'] = dict(
             Tutorial=pygame.image.load(
                 './Resources/Visual/Items/body.png').convert_alpha()
                 )
-
-images['Rooms']['Tutorial'] = pygame.image.load(
-    './Resources/Visual/Items/body.png'
-    ).convert_alpha()
 
 images['UI'] = dict(
         Inventory_Background=pygame.image.load(

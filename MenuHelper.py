@@ -1,5 +1,7 @@
 import pygame
 
+# todo: why isn't all of this shit in the main helper? @joycourier
+
 MENU_SANS = pygame.font.SysFont('Comic Sans MS', 30)
 SMALL_SANS = pygame.font.SysFont('Comic Sans MS', 20)
 

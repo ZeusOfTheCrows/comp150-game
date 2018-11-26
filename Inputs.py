@@ -1,15 +1,22 @@
-import Player
 import Helper
 import pygame
 from pygame.locals import *
 
 pygame.init()
 
-# variables
+
 swipeDistance = Helper.SWIPE_DISTANCE
 
 
-def read_mouse_movements(mouse_position, player):
+def read_mouse_movements(mouse_position):
+    """
+    ===========================================================================
+    Reads swipe inputs, input with the mouse on PC.
+
+    :param mouse_position: position of mouse button down.
+    :return: input command as a string (ie. move_right).
+    ===========================================================================
+    """
 
     mouse_down_x, mouse_down_y = mouse_position
     input_command = 'none'
@@ -25,6 +32,7 @@ def read_mouse_movements(mouse_position, player):
                 input_distance_h = mouse_up_x - mouse_down_x
                 input_distance_v = mouse_up_y - mouse_down_y
                 reading_mouse_change = False
+                # todo: why is this? ^
 
                 if input_distance_h >= swipeDistance:
                     input_command = 'move_right'
@@ -39,5 +47,4 @@ def read_mouse_movements(mouse_position, player):
                         abs(input_distance_v) < swipeDistance:
                     input_command = 'attack'
 
-                # player.player_action(input_command)
                 return input_command
