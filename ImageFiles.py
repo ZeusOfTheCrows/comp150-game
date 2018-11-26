@@ -3,6 +3,7 @@ import Helper
 
 pygame.init()
 
+# Initialising video mode for convert_alpha() function
 screen = pygame.display.set_mode(Helper.RESOLUTION, 0, 32)
 
 images = dict()
