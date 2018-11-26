@@ -1,20 +1,14 @@
 import pygame
 import sys
 import FrameHandler
-import Entity
-import ImageFiles
 import Helper
 import Menu
-import Inputs
 import Player
 import MapGenerator
-from pygame.locals import *
 
 pygame.init()
 
-
 # variables
-
 REFRESH_RATE = Helper.REFRESH_RATE
 DISPLAY_SURFACE = Helper.DISPLAY_SURFACE
 FPS_CLOCK = pygame.time.Clock()
@@ -28,6 +22,7 @@ game_state = 'Main_Menu'
 prev_game_state = ''
 is_paused = False
 running = True
+
 
 while running:
 
