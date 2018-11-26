@@ -1,10 +1,9 @@
 import pygame
 
-REFRESH_RATE = 100
+REFRESH_RATE = 60
 RESOLUTION = (750, 1334)
 DISPLAY_SURFACE = pygame.display.set_mode(RESOLUTION)
 
-# Entity variables:
 # Lane positions and whether or not they are occupied
 LANES = dict(
     left=[(150, 250), False],
@@ -27,6 +26,7 @@ PLAYER_ATTACK_COOLDOWN = 750
 # distance for character move steps
 MOVE_SPEED = 10
 
+# onscreen position of inventory
 INVENTORY_POSITION = (15, 970)
 
 # Tuples containing elements for naming items, rooms, entities etc

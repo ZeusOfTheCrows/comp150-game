@@ -1,4 +1,3 @@
-# this should only have one function in, this function can be moved elsewhere
 import pygame
 import Inputs
 import Helper
@@ -14,6 +13,15 @@ pygame.time.set_timer(Helper.UPDATETIME, Helper.t)
 
 
 def event_handler(game_state, player):
+    """
+    ===========================================================================
+    Handles keyboard/mouse inputs. Called every frame.
+    :param game_state: current state as a string (ie. Main_Menu, Settings, etc)
+    :param player: current instance of player class (should only be one)
+    :return: input action (ie, moving left or right), new game_state
+    ===========================================================================
+    """
+
     now = datetime.datetime.now()
     player_action = 'idle'
     for event in pygame.event.get():
@@ -37,6 +45,15 @@ def event_handler(game_state, player):
 
 
 def update(player, player_action):
+    """
+    ===========================================================================
+    Calls update functions for player, enemies, and projectiles.
+        Called every frame.
+    :param player: current instance of player class
+    :param player_action: input action, as defined in event_handler()
+    ===========================================================================
+    """
+
     if 'idle' in player_action and player.is_moving:
         player_action = player.move_direction
 
@@ -44,17 +61,21 @@ def update(player, player_action):
 
     if not player.inventoryIsOpen:
         for enemy in Entity.enemy_list:
-            enemy.enemy_update()
+            enemy.enemy_attack()
 
         for projectile in Projectile.attackSprites:
             projectile.update()
-        # print(str(player.playerRect.contains(projectile.rect)))
 
 
 def renderer():  # to be called every frame to render every image in a list
+    """
+    Blits everything to the screen that needs to be. Called every frame.
+    """
 
     Helper.DISPLAY_SURFACE.blit(ImageFiles.images['Background'], (0, 0))
-    Helper.DISPLAY_SURFACE.blit(Player.Player.playerSurf, Player.Player.playerPos)
+    Helper.DISPLAY_SURFACE.blit(Player.Player.playerSurf,
+                                Player.Player.playerPos
+                                )
 
     if Player.Player.inventoryIsOpen:
         Helper.DISPLAY_SURFACE.blit(
@@ -63,7 +84,9 @@ def renderer():  # to be called every frame to render every image in a list
         )
 
     for projectile in Projectile.attackSprites:
-        Helper.DISPLAY_SURFACE.blit(projectile.sprite, (projectile.pos_x, projectile.pos_y))
+        Helper.DISPLAY_SURFACE.blit(projectile.sprite,
+                                    (projectile.pos_x, projectile.pos_y)
+                                    )
 
     for enemy in Entity.enemy_list:
         Helper.DISPLAY_SURFACE.blit(enemy.sprite, enemy.pos)
