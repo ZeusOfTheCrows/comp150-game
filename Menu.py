@@ -65,7 +65,7 @@ def check_buttons(click_pos, save_file_exists):
     Checks which 'button' was clicked,
     can assign functions to each separate button
     Arguments:
-        click_pos -- position of the mouse click
+        click_pos -- pos of the mouse click
     """
     if buttons['buttonQuit'].collidepoint(click_pos):
         print("Button clicked: Quit")

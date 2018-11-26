@@ -1,6 +1,6 @@
 import pygame
 
-REFRESH_RATE = 100
+REFRESH_RATE = 60
 RESOLUTION = (750, 1334)
 DISPLAY_SURFACE = pygame.display.set_mode(RESOLUTION)
 
@@ -29,7 +29,7 @@ MOVE_SPEED = 10
 
 INVENTORY_POSITION = (15, 970)
 
-# Tuples containing elements for naming items, rooms, entities etc
+# Tuples containing elements for naming items, rooms_list, entities etc
 Affinities = ('Chaos', 'Abyss', 'Void', 'Eldritch')
 ELEMENTS = ('Water', 'Air', 'Earth', 'Fire')
 MODIFIERS_ELEMENTAL_T1 = ('Dew', 'Whistles', 'Pebbles', 'Ashes')
@@ -93,6 +93,8 @@ room_encounter_type = (
                        )
 
 # Custom events
+
+# Event used for time-of-day specific features (called every second)
 
 UPDATETIME, t = pygame.USEREVENT+1, 1000
 

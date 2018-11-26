@@ -351,7 +351,7 @@ def _optimize_charset(charset, fixup, fixes, isunicode):
     # given a number. In the compiled expression, the charset is
     # represented by a 32-bit word sequence, consisting of one word for
     # the number of different chunks, a sequence of 256 bytes (64 words)
-    # of chunk numbers indexed by their original chunk position, and a
+    # of chunk numbers indexed by their original chunk pos, and a
     # sequence of 256-bit chunks (8 words each).
 
     # Compression is normally good: in a typical charset, large ranges of

@@ -8,6 +8,7 @@ import Menu
 import pickle
 import Player
 import MapGenerator
+from Room import Room
 from pygame.locals import *
 
 pygame.init()
@@ -28,6 +29,10 @@ game_state = 'Main_Menu'
 prev_game_state = ''
 is_paused = False
 running = True
+game_is_saved = False
+
+first_room = Room()
+second_room = Room()
 
 while running:
 
