@@ -34,10 +34,12 @@ class RoomTutorial(Room):
             # add code for room transition
             Room.__init__(self)
             RoomTutorial.current_stage += 1
+
             self.texture = ImageFiles.images['Rooms']['Tutorial']
             self.pos = []
             self.pos[0] = pos_x
             self.pos[1] = pos_y
+
             # Use this in the regular enemy and boss rooms
             self.lanes = dict()
             self.lanes['left'] = Lane(150, 150, 'left')
