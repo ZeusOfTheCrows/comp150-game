@@ -5,6 +5,7 @@ import Helper
 import Menu
 import Player
 import MapGenerator
+from Room import Room
 
 pygame.init()
 
@@ -22,18 +23,25 @@ game_state = 'Main_Menu'
 prev_game_state = ''
 is_paused = False
 running = True
+game_is_saved = False
+
+first_room = Room()
+second_room = Room()
 
 
 while running:
 
     while game_state == 'Main_Menu':
-        game_state = Menu.menu_update()
+        game_state, loaded_data = Menu.menu_update()
 
     while game_state == 'Settings':
         game_state = Menu.settings_menu_update()
 
     while game_state == 'New_Game':
         # event handling section
+        if loaded_data:
+            aux_player = loaded_data
+            print(aux_player.health)
         player_action, game_state = FrameHandler.event_handler(
             game_state,
             player)

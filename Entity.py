@@ -57,9 +57,10 @@ class Enemy(Entity):
 
     numberOfOnscreenEnemies = 0
 
-    def __init__(self):
+    def __init__(self, room=None):
         Entity.__init__(self)
         self.on_battle = True
+        self.room = room
         self.alignment = Entity.entity_alignment[0]
         self.health = Entity.defaultHealth  # * (enemyLevel * 0.1)
         self.sprite = ImageFiles.images['Enemy']  # [random.randint(0, len(ImageFiles.images) - 1)]
@@ -116,7 +117,7 @@ class Enemy(Entity):
         print('\'tis a hit: ' + str(self.health) + ' hp remaining')
         # play_sound(enemy_hit)
         if self.health <= 0:
-            enemy_list.remove(enemy_list[enemy_list.index(self)])
+            self.__del__()
 
     def enemy_attack(self):
         """
@@ -140,6 +141,7 @@ class Enemy(Entity):
         try:
             Helper.LANES[self.lane_key][1] = False
             Enemy.numberOfOnscreenEnemies -= 1
+            enemy_list.remove(enemy_list[enemy_list.index(self)])
             del self
         except AttributeError:
             print('Thank you for playing Wing Commander!')

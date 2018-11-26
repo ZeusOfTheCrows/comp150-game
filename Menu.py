@@ -2,6 +2,7 @@ import pygame
 import sys
 import Helper
 import MenuHelper
+import pickle
 from pygame.locals import *
 
 pygame.init()
@@ -47,7 +48,7 @@ def draw_menu(save_file_exists):  # Draws rectangles to represent the 'buttons'
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_BLACKCONTINUE, (480, 484))
 
     else:
-        raise ValueError('\'save_file_exists\' is neither true nor false.'\
+        raise ValueError('\'save_file_exists\' is neither true nor false.'
                          'This is not Schrodinger\'s save_file, fix it.')
 
 
@@ -64,15 +65,15 @@ def check_buttons(click_pos, save_file_exists):
     Checks which 'button' was clicked,
     can assign functions to each separate button
     Arguments:
-        click_pos -- position of the mouse click
+        click_pos -- pos of the mouse click
     """
     if buttons['buttonQuit'].collidepoint(click_pos):
         print("Button clicked: Quit")
-        return 'Quit'
+        return 'Quit', None
 
     elif buttons['buttonNewGame'].collidepoint(click_pos):
         print("Button clicked: New Game")
-        return 'New_Game'
+        return 'New_Game', None
 
     elif buttons['buttonContinue'].collidepoint(click_pos):
         if save_file_exists:
@@ -80,12 +81,11 @@ def check_buttons(click_pos, save_file_exists):
             # return 'Continue'
         else:
             print("Button clicked: Continue. However, save file not found.")
-
     elif buttons['buttonSettings'].collidepoint(click_pos):
         print("Button clicked: Settings")
-        return 'Settings'
+        return 'Settings', None
 
-    return 'Main_Menu'
+    return 'Main_Menu', None
 
 
 def check_settings_buttons(click_pos):

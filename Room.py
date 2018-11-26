@@ -1,78 +1,71 @@
-import random
-import pygame
-import Helper
-import Entity
 import ImageFiles
+import pygame
+import random
+import Helper
 
 # Classes used by Room type Objects
 
 
 class Room:
-    room_index = 0
+    rooms_index = 0
+    rooms_list = []     # should usually contain 3 rooms tops
 
-    # create dictionary for lane positions
+    prev_room = None
+    current_room = None
+    next_room = None
+
+    number_of_steps = 200
+    room_move_speed = int(Helper.RESOLUTION[1] / number_of_steps)  # pixels/sec
+
+    next_room_x = -Helper.RESOLUTION[1]
+    current_room_x = 0
+    prev_room_x = Helper.RESOLUTION[1]
 
     def __init__(self):
-        self.index = Room.room_index
-        Room.room_index += 1
+        self.index = Room.rooms_index
+        Room.rooms_list.append(self)
+        Room.rooms_index += 1
 
+        self.position = [0, 0]
 
-class RoomTutorial(Room):
+        self.prev = None
+        self.next = None
 
-    current_stage = 0
-    tutorial_stages = 3
+        self.texture = random.choice(list(ImageFiles.images['Rooms'].values()))
 
-    def __init__(self):
-        Room.__init__(self)
-        self.texture = ImageFiles.images['Rooms']['Tutorial']
-        # Use this in the regular enemy and boss rooms
-        self.lanes = dict()
-        self.lanes['left'] = Lane(150, 150, 'left')
-        self.lanes['centre'] = Lane(375, 150, 'centre')
-        self.lanes['right'] = Lane(600, 150, 'right')
+        if self.index == 0:
+            Room.current_room = self
+            # Currently a single room is available
+        else:
+            Room.rooms_list[1].next = self
+            self.prev = Room.rooms_list[1]
+            self.position[1] = Room.next_room_x
+            Room.next_room = self
 
     @staticmethod
-    def create_tutorial_room(enemies=random.randint(1, 3)):
-        room = RoomTutorial()
+    def remove_room(room):
+        Room.prev_room = None
+        del Room.rooms_list[0]
 
-        if enemies > 0:
-            room.lanes['centre'].occupy_lane(Entity.Enemy)
-            enemies -= 1
+    @staticmethod
+    def advance_room():
+        # print('Rooms list:', str(Room.rooms_list))
+        if Room.prev_room:
+            # print('Removing room',str(Room.prev_room))
+            Room.remove_room(Room.prev_room)
+        Room.prev_room = Room.current_room
+        Room.prev_room.position[1] -= Room.room_move_speed
+        Room.current_room = Room.next_room
+        Room.current_room.position[1] -= Room.room_move_speed
+        Room.next_room = Room()     # TODO: initialize here or outside?
 
-        if enemies > 0:
-            room.lanes['left'].occupy_lane(Entity.Enemy)
-            enemies -= 1
-
-        if enemies > 0:
-            room.lanes['right'].occupy_lane(Entity.Enemy)
-            enemies -= 1
-
-
-class Lane():
-    def __init__(self, origin_x, origin_y, key, is_occupied=False):
-        self.occupied = is_occupied
-        self.occupant = None
-        self.origin = (origin_x, origin_y)
-        self.key = key
-
-    def occupy_lane(self, occupant):
-        self.occupant = occupant
-        self.occupied = True
-
-
-class RoomEncounter(Room):
-    def __init__(self, room_type = random.randint(1, 4)):
-        Room.__init__(self)
-
-
-class RoomEnemy(Room):
-
-    def __init__(self):
-        Room.__init__(self)
-
-
-class RoomBoss(Room):
-
-    def __init__(self):
-        Room.__init__(self)
+    @staticmethod
+    def move_room():
+        if Room.current_room.position[1] < Room.current_room_x:
+            print('Moving next room by', Room.room_move_speed)
+            Room.current_room.position[1] += Room.room_move_speed
+        if Room.prev_room:
+            if Room.prev_room.position[1] < Room.prev_room_x:
+                print('Moving current room by', Room.room_move_speed)
+                Room.prev_room.position[1] += Room.room_move_speed
 

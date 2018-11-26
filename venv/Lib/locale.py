@@ -295,7 +295,7 @@ def currency(val, symbol=True, grouping=False, international=False):
         s = s.replace('>', sign)
     else:
         # the default if nothing specified;
-        # this should be the most fitting sign position
+        # this should be the most fitting sign pos
         s = sign + s
 
     return s.replace('<', '').replace('>', '')
