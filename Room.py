@@ -1,5 +1,4 @@
 import ImageFiles
-import pygame
 import random
 import Helper
 
@@ -14,7 +13,7 @@ class Room:
     current_room = None
     next_room = None
 
-    number_of_steps = 200
+    number_of_steps = 100
     room_move_speed = int(Helper.RESOLUTION[1] / number_of_steps)  # pixels/sec
 
     next_room_x = -Helper.RESOLUTION[1]

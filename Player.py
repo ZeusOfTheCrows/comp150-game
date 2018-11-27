@@ -7,7 +7,7 @@ import pygame
 
 
 class Player(Entity.Entity):
-    # todo: why doesn't this exist? ^
+
     is_moving = False
     move_direction = ''
     isLeavingRoom = False

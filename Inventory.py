@@ -1,3 +1,4 @@
+# Inventories will be defined below
 import Player
 
 
@@ -44,7 +45,6 @@ class Inventory:
             print('No such item found in inventory')
 
     def __str__(self):
-        # todo: what on earth does this do @powll?
         out = '\t'
         for item in Inventory.items:
             out += '\t' + item.name + ' '
@@ -104,12 +104,10 @@ class Backpack(Inventory):
         Player.Player.weaponEquipped = item_to_remove
         Backpack.items[index] = item_to_add
 
-    def empty_backpack(self, source_inventory):
-        # todo: @powll what does any of this do‽
+    def empty_backpack(self):
         """
         =======================================================================
         Removes all items from backpack.
-        :param source_inventory: I'm not quite sure
         =======================================================================
         """
 
