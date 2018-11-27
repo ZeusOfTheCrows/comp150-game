@@ -8,18 +8,32 @@ import Projectile
 import datetime
 import TimeOfDay
 import pickle
+import random
 from Room import Room
 from pygame.locals import *
 
 game_is_saved = False
+room_is_populated = False
+room_needs_advancing = False
 
 pygame.time.set_timer(Helper.UPDATETIME, Helper.t)
 
 
 def save_game(player):
     save_data = player
-    # print('Saving game...')
+    print('Saving game...')
     pickle.dump(save_data, open("savegame.p", "wb"))
+    return True
+
+
+def populate_current_room():
+    print('Populating current room...')
+    if Room.current_room.is_populated is False:
+        enemy_count = random.randint(1, 3)
+    else:
+        return False
+    for i in range(0, enemy_count):
+        Entity.enemy_list.append(Entity.Enemy(Room.current_room))
     return True
 
 
@@ -49,9 +63,12 @@ def event_handler(game_state, player):
 
     now = datetime.datetime.now()
     global game_is_saved
+    global room_is_populated
     player_action = 'idle'
+
     if Entity.Enemy.numberOfOnscreenEnemies == 0 and game_is_saved is False:
         game_is_saved = save_game(player)
+
     for event in pygame.event.get():
         if event.type == Helper.UPDATETIME:
             TimeOfDay.TimeOfDay.update_time_of_day(now)
@@ -60,22 +77,29 @@ def event_handler(game_state, player):
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 game_state = 'Main_Menu'
-            elif event.key == K_g and Entity.Enemy.numberOfOnscreenEnemies < 3:
-                Entity.enemy_list.append(Entity.Enemy())
-            elif event.key == K_h and Entity.Enemy.numberOfOnscreenEnemies > 0:
-                for enemy in Entity.enemy_list:
-                    enemy.__del__()
-            elif event.key == K_w and not Player.Player.is_moving:
-                if len(Entity.enemy_list) == 0:
-                    Player.Player.isLeavingRoom = True
-            elif event.key == K_n:
-                Room.advance_room()
-                game_is_saved = False
             elif event.key == K_m:
                 print_data()
-
         elif event.type == MOUSEBUTTONDOWN:
             player_action = Inputs.read_mouse_movements(event.pos)
+
+    if not room_is_populated:
+        room_is_populated = populate_current_room()
+    # if Entity.Enemy.numberOfOnscreenEnemies < 3:
+    #     Entity.enemy_list.append(Entity.Enemy())
+    # elif event.key == K_h and Entity.Enemy.numberOfOnscreenEnemies > 0:
+    #     for enemy in Entity.enemy_list:
+    #         enemy.__del__() todo: remove
+    if not Player.Player.is_moving and not Player.Player.isLeavingRoom:
+        if len(Entity.enemy_list) == 0:
+            Player.Player.isLeavingRoom = True
+            Room.advance_room()
+
+    if Room.current_room.position[1] >= Room.current_room_x\
+            and Player.Player.isLeavingRoom:
+        Player.Player.isLeavingRoom = False
+        game_is_saved = False
+        room_is_populated = False
+
     return player_action, game_state
 
 

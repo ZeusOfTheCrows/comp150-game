@@ -30,6 +30,8 @@ class Room:
         self.prev = None
         self.next = None
 
+        self.is_populated = False
+
         self.texture = random.choice(list(ImageFiles.images['Rooms'].values()))
 
         if self.index == 0:
@@ -61,10 +63,10 @@ class Room:
     @staticmethod
     def move_room():
         if Room.current_room.position[1] < Room.current_room_x:
-            print('Moving next room by', Room.room_move_speed)
+            # print('Moving next room by', Room.room_move_speed)
             Room.current_room.position[1] += Room.room_move_speed
         if Room.prev_room:
             if Room.prev_room.position[1] < Room.prev_room_x:
-                print('Moving current room by', Room.room_move_speed)
+                # print('Moving current room by', Room.room_move_speed)
                 Room.prev_room.position[1] += Room.room_move_speed
 

@@ -146,7 +146,7 @@ class Enemy(Entity):
             Enemy.numberOfOnscreenEnemies -= 1
             enemy_list.remove(enemy_list[enemy_list.index(self)])
             del self
-        except AttributeError:
+        except ValueError:
             print('Thank you for playing Wing Commander!')
 
 
