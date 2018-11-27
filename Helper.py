@@ -5,10 +5,10 @@ RESOLUTION = (750, 1334)
 DISPLAY_SURFACE = pygame.display.set_mode(RESOLUTION)
 
 # colours
-GREEN = (0, 255, 0)
-YELLOW = (255, 255, 0)
-RED = (255, 0, 0)
-WHITE = (255, 255, 255)
+GREEN = (0, 155, 0)
+YELLOW = (155, 155, 0)
+RED = (155, 10, 0)
+WHITE = (200, 200, 200)
 
 # health bar dimensions
 HEALTH_BAR_SIZE = (137, 8)

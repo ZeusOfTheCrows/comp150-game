@@ -157,8 +157,11 @@ def renderer():  # to be called every frame to render every image in a list
     Helper.DISPLAY_SURFACE.blit(Player.Player.playerSurf, Player.Player.playerPos)
 
     for bar in Entity.health_bars:
-        bar_surface = pygame.Surface((bar.size[0], bar.size[1]))
+        bar_background = pygame.Surface((bar.size[0], bar.size[1]))
+        bar_background.fill((0, 0, 0))
+        bar_surface = pygame.Surface((bar.size[0] * (bar.health / bar.max_health), bar.size[1]))
         bar_surface.fill(bar.colour)
+        Helper.DISPLAY_SURFACE.blit(bar_background, (bar.pos[0], bar.pos[1]))
         Helper.DISPLAY_SURFACE.blit(bar_surface, (bar.pos[0], bar.pos[1]))
 
     if Player.Player.inventoryIsOpen:
