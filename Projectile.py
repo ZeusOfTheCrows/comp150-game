@@ -19,11 +19,7 @@ class EnemyProjectile:
         self.rect = self.sprite.get_rect()
         self.lane = lane
         self.damage = parent_enemy.damage()
-
-        print('this will deal '
-              + str(self.damage)
-              + ' to the player with '
-              + str(Player.Player.health) + 'hp')
+        self.parent = parent_enemy
 
         self.pos_y = self.rect.y = Helper.LANES[lane][0][1] \
                                    - int(self.rect.height/2)
@@ -59,13 +55,10 @@ class PlayerProjectile:
         self.sprite = ImageFiles.images['Player_Attack']
         self.rect = self.sprite.get_rect()
         self.lane = lane
+        self.parent = Player
         self.damage = Player.Player.weaponEquipped.damage \
             if Player.Player.weaponEquipped \
             else Player.Player.baseDamage
-
-        print('this will deal '
-              + str(self.damage)
-              + ' to the enemy it hits')
 
         self.pos_x = self.rect.x = Player.Player.playerPos[0] + self.rect.width/2
         self.pos_y = self.rect.y = Player.Player.playerPos[1] + self.rect.height/2

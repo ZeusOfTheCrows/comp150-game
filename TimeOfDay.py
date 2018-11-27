@@ -10,6 +10,7 @@ class TimeOfDay:
 
     @staticmethod
     def update_time_of_day(current_time):
+        message = ''
         if Helper.TIME_OF_DAY['morning'][0][0] \
                 >= current_time.hour * 100 + current_time.minute \
                 < Helper.TIME_OF_DAY['morning'][0][1]:
@@ -31,7 +32,9 @@ class TimeOfDay:
 
         if TimeOfDay.CurrentTime \
                 != TimeOfDay.PreviousTime:
-            print('It is now ' + TimeOfDay.CurrentTime
-                  + Helper.TIME_OF_DAY[TimeOfDay.CurrentTime][2])
+            message = ('It is now ' + TimeOfDay.CurrentTime
+                       + Helper.TIME_OF_DAY[TimeOfDay.CurrentTime][2])
             TimeOfDay.PreviousTime = TimeOfDay.CurrentTime
+
+        return message if len(message) > 0 else None
 
