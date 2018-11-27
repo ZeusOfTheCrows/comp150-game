@@ -149,9 +149,9 @@ class Player(Entity.Entity):
     @staticmethod
     def is_hit(damage):
         Player.health -= damage
-        print('Player has ' + str(Player.health) + ' hp remaining')
+        # print('Player has ' + str(Player.health) + ' hp remaining')
         if Player.health <= 0:
-            print('You\'s ded bruh')
+            # print('You\'s ded bruh')
             Player.die()
 
     @staticmethod

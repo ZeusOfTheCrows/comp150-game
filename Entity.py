@@ -62,20 +62,21 @@ class Enemy(Entity):
         self.on_battle = True
         self.room = room
         self.alignment = Entity.entity_alignment[0]
-        self.health = Entity.defaultHealth  # * (enemyLevel * 0.1)
+        self.health = int(Entity.defaultHealth * (room.index / 10))  # * (enemyLevel * 0.1)
         self.sprite = ImageFiles.images['Enemy']  # [random.randint(0, len(ImageFiles.images) - 1)]
-        self.chance_to_attack = 1
+        self.chance_to_attack = 10 * room.index + 1
 
-        self.time_since_attack = pygame.time.get_ticks()
+        self.last_attack = pygame.time.get_ticks()
 
-        self.attack_cooldown = random.randint(50, 200)
+        self.attack_cooldown = \
+            random.randint(300, 500) - room.index * 10
 
         self.max_attack_chance = 1000
 
         lane_is_occupied = True
         self.lane_key = 'middle'
 
-        self.base_damage = 10
+        self.base_damage = 10 + random.randint(0, room.index)
 
         self.damage = self.calculate_damage
 
@@ -117,7 +118,7 @@ class Enemy(Entity):
         =======================================================================
         """
         self.health = self.health - damage
-        print('\'tis a hit: ' + str(self.health) + ' hp remaining')
+        # print('\'tis a hit: ' + str(self.health) + ' hp remaining')
         # play_sound(enemy_hit)
         if self.health <= 0:
             self.__del__()
@@ -131,9 +132,10 @@ class Enemy(Entity):
         attack = random.randint(1, self.max_attack_chance)
         if attack <= self.chance_to_attack \
                 and pygame.time.get_ticks()\
-                - self.time_since_attack \
+                - self.last_attack \
                 > self.attack_cooldown:
             Projectile.EnemyProjectile(self.lane_key, self)
+            self.last_attack = pygame.time.get_ticks()
 
     def __del__(self):
         """
@@ -147,6 +149,7 @@ class Enemy(Entity):
             enemy_list.remove(enemy_list[enemy_list.index(self)])
             del self
         except ValueError:
+            del self
             print('Thank you for playing Wing Commander!')
 
 

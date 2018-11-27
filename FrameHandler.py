@@ -34,6 +34,7 @@ def populate_current_room():
         return False
     for i in range(0, enemy_count):
         Entity.enemy_list.append(Entity.Enemy(Room.current_room))
+    print(str(Entity.enemy_list))
     return True
 
 
@@ -48,6 +49,15 @@ def print_data():
           str(Room.current_room_x),
           str(Room.prev_room_x))
     print('Movement step is', str(Room.room_move_speed))
+
+
+def clean_room():
+    """
+    ===========================================================================
+    Removes projectiles and items in the room.
+    ===========================================================================
+    """
+    Projectile.attackSprites.clear()
 
 
 def event_handler(game_state, player):
@@ -93,6 +103,7 @@ def event_handler(game_state, player):
         if len(Entity.enemy_list) == 0:
             Player.Player.isLeavingRoom = True
             Room.advance_room()
+            clean_room()
 
     if Room.current_room.position[1] >= Room.current_room_x\
             and Player.Player.isLeavingRoom:
