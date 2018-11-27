@@ -106,7 +106,7 @@ class Enemy(Entity):
         self.on_battle = True
         self.room = room
         self.alignment = Entity.entity_alignment[0]
-        self.health = int(Entity.defaultHealth * (room.index / 10))  # * (enemyLevel * 0.1)
+        self.health = max(10, int(Entity.defaultHealth * (room.index / 10)))  # * (enemyLevel * 0.1)
         self.sprite = ImageFiles.images['Enemy']  # [random.randint(0, len(ImageFiles.images) - 1)]
         self.chance_to_attack = 10 * room.index + 1
 
