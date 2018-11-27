@@ -1,37 +1,64 @@
-import pygame, sys, LoadImages
-from pygame.locals import *
+import pygame
+import sys
+import FrameHandler
+import Helper
+import Menu
+import Player
+import MapGenerator
+from Room import Room
 
 pygame.init()
 
 # variables
-refreshRate = 60
-resolution = (750, 1000)
-# colours
-darkBrown = (79, 51, 44)
-lightBrown = (107, 74, 55)
-darkYellow = (124, 91, 51)
-lightYellow = (147, 117, 53)
-black = (0, 0, 0)
-darkGrey = (63, 63, 63)
-midGrey = (127, 127, 127)
-lightGrey = (191, 191, 191)
-
-# guff
-displaySurface = pygame.display.set_mode(resolution)
-clock = pygame.time.Clock()
+REFRESH_RATE = Helper.REFRESH_RATE
+DISPLAY_SURFACE = Helper.DISPLAY_SURFACE
+FPS_CLOCK = pygame.time.Clock()
 pygame.display.set_caption('Sekai Saviour')
-displaySurface.fill(darkBrown)
+DISPLAY_SURFACE.fill((79, 51, 44))
+player = Player.Player()
+MapGenerator.run_separator()
 
-# game loop
-while True:
 
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+game_state = 'Main_Menu'
+prev_game_state = ''
+is_paused = False
+running = True
+game_is_saved = False
 
-    # redraw display
-    pygame.display.flip()
+first_room = Room()
+second_room = Room()
+
+
+while running:
+
+    while game_state == 'Main_Menu':
+        game_state, loaded_data = Menu.menu_update()
+
+    while game_state == 'Settings':
+        game_state = Menu.settings_menu_update()
+
+    while game_state == 'New_Game':
+        # event handling section
+        if loaded_data:
+            aux_player = loaded_data
+            print(aux_player.health)
+        player_action, game_state = FrameHandler.event_handler(
+            game_state,
+            player)
+
+        # action handling section
+        FrameHandler.update(player, player_action)
+
+        # display handling section
+        FrameHandler.renderer()
+
+    if game_state == 'Quit':
+        running = False
 
     # cap fps
-    clock.tick(refreshRate)
+    FPS_CLOCK.tick(REFRESH_RATE)
+
+MapGenerator.run_remover()  # cleans generated tiles from Resources/Tiles
+
+pygame.quit()
+sys.exit()

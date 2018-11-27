@@ -617,7 +617,7 @@ class StreamReader(Codec):
         self.linebuffer = None
 
     def seek(self, offset, whence=0):
-        """ Set the input stream's current position.
+        """ Set the input stream's current pos.
 
             Resets the codec buffers used for keeping state.
         """
