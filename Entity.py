@@ -34,8 +34,6 @@ class HealthBar:
 
         health_bars.append(self)
 
-        print('created health bar for', type(entity))
-
     def colour_update(self):
         if self.health <= 0:
             health_bars.remove(self)
@@ -189,14 +187,16 @@ class Enemy(Entity):
         Deletes enemy instance, and lowers number of onscreen enemies.
         =======================================================================
         """
-        try:
-            Helper.LANES[self.lane_key][1] = False
-            Enemy.numberOfOnscreenEnemies -= 1
-            enemy_list.remove(enemy_list[enemy_list.index(self)])
+        for projectile in Projectile.attackSprites:
+            if projectile.parent == self:
+                Projectile.attackSprites.remove(projectile)
+        Helper.LANES[self.lane_key][1] = False
+        Enemy.numberOfOnscreenEnemies = \
+            max(0, Enemy.numberOfOnscreenEnemies - 1)
+        if self in enemy_list:
+            enemy_list.remove(self)
+        else:
             del self
-        except ValueError:
-            del self
-            print('Thank you for playing Wing Commander!')
 
 
 class EnemyBoss(Enemy):

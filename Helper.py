@@ -40,6 +40,18 @@ MOVE_SPEED = 10
 # onscreen position of inventory
 INVENTORY_POSITION = (15, 970)
 
+# onscreen position for in-game text display
+TEXT_DISPLAY_POSITION = (RESOLUTION[0] / 2, 250)
+
+# delay for displaying in-game messages
+TEXT_DISPLAY_DELAY = 2000
+
+# for how long the text is displayed
+TEXT_DISPLAY_TIME = 4000
+
+# default font size
+DEFAULT_FONT_SIZE = 32
+
 # Tuples containing elements for naming items, rooms_list, entities etc
 Affinities = ('Chaos', 'Abyss', 'Void', 'Eldritch')
 ELEMENTS = ('Water', 'Air', 'Earth', 'Fire')

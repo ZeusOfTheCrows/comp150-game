@@ -16,18 +16,29 @@ game_is_saved = False
 room_is_populated = False
 room_needs_advancing = False
 
+display_messages = []
+display_delay = Helper.TEXT_DISPLAY_DELAY
+display_time = Helper.TEXT_DISPLAY_TIME
+display_position = list(Helper.TEXT_DISPLAY_POSITION)
+time_since_last_display = pygame.time.get_ticks()
+message_to_display = ''
+
 pygame.time.set_timer(Helper.UPDATETIME, Helper.t)
+
+pygame.font.init()
+
+FONT_INVERTED = pygame.font.SysFont('Inverted Regular', Helper.DEFAULT_FONT_SIZE)
 
 
 def save_game(player):
     save_data = player
-    print('Saving game...')
+    display_messages.append('Saving game...')
     pickle.dump(save_data, open("savegame.p", "wb"))
     return True
 
 
 def populate_current_room():
-    print('Populating current room...')
+    display_messages.append('Populating current room...')
     if Room.current_room.is_populated is False:
         enemy_count = random.randint(1, 3)
     else:
@@ -58,6 +69,8 @@ def clean_room():
     ===========================================================================
     """
     Projectile.attackSprites.clear()
+    for enemy in Entity.enemy_list:
+        enemy.__del__()
 
 
 def event_handler(game_state, player):
@@ -81,7 +94,9 @@ def event_handler(game_state, player):
 
     for event in pygame.event.get():
         if event.type == Helper.UPDATETIME:
-            TimeOfDay.TimeOfDay.update_time_of_day(now)
+            message = TimeOfDay.TimeOfDay.update_time_of_day(now)
+            if message is not None and len(message) > 0:
+                display_messages.append(message)
         if event.type == QUIT:
             game_state = 'Quit'
         elif event.type == KEYDOWN:
@@ -159,7 +174,8 @@ def renderer():  # to be called every frame to render every image in a list
     for bar in Entity.health_bars:
         bar_background = pygame.Surface((bar.size[0], bar.size[1]))
         bar_background.fill((0, 0, 0))
-        bar_surface = pygame.Surface((bar.size[0] * (bar.health / bar.max_health), bar.size[1]))
+        bar_surface = pygame.Surface((bar.size[0] *
+                                      (bar.health / bar.max_health), bar.size[1]))
         bar_surface.fill(bar.colour)
         Helper.DISPLAY_SURFACE.blit(bar_background, (bar.pos[0], bar.pos[1]))
         Helper.DISPLAY_SURFACE.blit(bar_surface, (bar.pos[0], bar.pos[1]))
@@ -177,6 +193,42 @@ def renderer():  # to be called every frame to render every image in a list
 
     for enemy in Entity.enemy_list:
         Helper.DISPLAY_SURFACE.blit(enemy.sprite, enemy.pos)
+
+    global message_to_display
+    global time_since_last_display
+
+    if message_to_display == '':
+
+        if time_since_last_display < pygame.time.get_ticks() + display_delay\
+                and len(display_messages) > 0:
+
+            message_to_display = display_messages.pop(0)
+            time_since_last_display = pygame.time.get_ticks()
+    else:
+        if time_since_last_display + display_time < pygame.time.get_ticks():
+            message_to_display = ''
+
+    text_surface = FONT_INVERTED.render(message_to_display,
+                                        False,
+                                        Helper.WHITE)
+
+    if text_surface.get_width() > Helper.DISPLAY_SURFACE.get_width():
+        messages = message_to_display.split(',')
+        index = 0
+        for message in messages:
+            if message is not '':
+                if message not in display_messages:
+                    display_messages.insert(0 + index, message)
+                    index += 1
+
+        text_surface = FONT_INVERTED.render('',
+                                            False,
+                                            Helper.WHITE)
+
+    Helper.DISPLAY_SURFACE.blit(text_surface,
+                                (display_position[0]
+                                 - int(text_surface.get_width() / 2),
+                                 display_position[1] + 200))
 
     pygame.time.Clock().tick(Helper.REFRESH_RATE)
     pygame.display.flip()
