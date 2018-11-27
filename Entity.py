@@ -63,7 +63,7 @@ class Enemy(Entity):
         self.room = room
         self.alignment = Entity.entity_alignment[0]
         self.health = Entity.defaultHealth  # * (enemyLevel * 0.1)
-        self.sprite = ImageFiles.images['Enemy']
+        self.sprite = ImageFiles.images['Enemy']  # [random.randint(0, len(ImageFiles.images) - 1)]
         self.chance_to_attack = 1
 
         self.time_since_attack = pygame.time.get_ticks()
@@ -101,12 +101,11 @@ class Enemy(Entity):
     def calculate_damage(self):
         """
         =======================================================================
-        Calculates damage to enemy based on time of day.
+        Returns damage to enemy based on time of day.
 
         :return: damage to enemy
         =======================================================================
         """
-
         return self.base_damage * TimeOfDay.TimeOfDay.MonsterBuff
 
     def is_hit(self, damage):
