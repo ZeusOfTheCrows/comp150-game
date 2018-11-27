@@ -44,6 +44,8 @@ class Player(Entity.Entity):
         Entity.Entity.__init__(self)
         Player.health = Entity.Entity.defaultHealth
 
+        Player.healthBar = Entity.HealthBar(self)
+
     @staticmethod
     def player_action(player, action):
         if not Player.isLeavingRoom:
