@@ -66,6 +66,7 @@ def draw_settings_menu():
     Draws rectangles to represent the setting menu background and back button.
     ===========================================================================
     """
+
     pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['settingsBackground'])
     DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_DESPACITO, (625, 940))
 
@@ -83,7 +84,6 @@ def check_buttons(click_pos, save_file_exists):
     :return: the game state (as a string)
     ===========================================================================
     """
-
     if buttons['buttonQuit'].collidepoint(click_pos):
         print("Button clicked: Quit")
         return 'Quit', None
@@ -106,6 +106,12 @@ def check_buttons(click_pos, save_file_exists):
 
 
 def check_settings_buttons(click_pos):
+    """
+    todo: docstring
+    :param click_pos:
+    :return:
+    """
+
     if buttons['settingsExit'].collidepoint(click_pos):
         print("Button clicked: Exit Settings")
         return 'Main_Menu'
@@ -166,7 +172,7 @@ def menu_update():
     """
 
     (mouse_x, mouse_y) = (0, 0)
-    save_file_exists = False  # todo: this needs to be a real check @joycourier
+    save_file_exists = False
     while True:
         DISPLAY_SURFACE.fill(BLACK)
         draw_menu(save_file_exists)
@@ -181,6 +187,7 @@ def menu_update():
 
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
+                    print('Key pressed: Escape - Closing game...')
                     pygame.quit()
                     sys.exit()
 
@@ -218,6 +225,7 @@ def settings_menu_update():
 
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
+                    print('Key pressed: Escape - Exiting menu...')
                     return 'Main_Menu'
 
             # check if a button was clicked on mouse click

@@ -36,7 +36,7 @@ def print_data():
     print('Movement step is', str(Room.room_move_speed))
 
 
-def event_handler(game_state, player):  # todo: remove parameter?
+def event_handler(game_state, player):
     """
     ===========================================================================
     Handles keyboard/mouse inputs. Called every frame.
@@ -105,7 +105,9 @@ def update(player, player_action):
 
 def renderer():  # to be called every frame to render every image in a list
     """
+    ===========================================================================
     Blits everything to the screen that needs to be. Called every frame.
+    ===========================================================================
     """
 
     if Room.prev_room:
