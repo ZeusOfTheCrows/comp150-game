@@ -2,6 +2,8 @@ import pygame
 import random
 import ImageFiles
 import Helper
+from Helper import HEALTH_BAR_THRESHOLDS as THRESHOLDS
+from Helper import HEALTH_BAR_COLOURS as COLOURS
 import Projectile
 import TimeOfDay
 # Classes used by Entity type Objects
@@ -10,6 +12,48 @@ pygame.init()
 
 # Contains all enemies that are currently being displayed
 enemy_list = []
+
+health_bars = []
+
+
+class HealthBar:
+
+    def __init__(self, entity):
+        self.size = Helper.HEALTH_BAR_SIZE
+        self.max_health = entity.health
+        self.health = self.max_health
+        self.parent = entity
+        self.colour = COLOURS[len(COLOURS) - 1]
+        self.pos = [0, 0]
+        self.pos[0] = entity.pos[0] \
+            if type(entity) == Enemy \
+            else entity.playerPos[0]
+        self.pos[1] = entity.pos[1] + int(entity.rect.height) \
+            if type(entity) == Enemy \
+            else entity.playerPos[1]
+
+        health_bars.append(self)
+
+        print('created health bar for', type(entity))
+
+    def colour_update(self):
+        if self.health <= 0:
+            health_bars.remove(self)
+        for i in range(0, len(THRESHOLDS)):
+            if self.health <= int(self.max_health * THRESHOLDS[i]):
+                self.colour = COLOURS[i]
+                return
+
+    def health_bar_update(self):
+        self.health = self.parent.health
+        self.pos[0] = self.parent.pos[0] \
+            if type(self.parent) == Enemy \
+            else self.parent.playerPos[0]
+        self.pos[1] = self.parent.pos[1] + int(self.parent.rect.height) \
+            if type(self.parent) == Enemy \
+            else self.parent.playerPos[1]
+        if self.parent.health < self.max_health:
+            self.colour_update()
 
 
 class Entity:
@@ -98,6 +142,8 @@ class Enemy(Entity):
         self.rect.x = self.pos[0]
         self.rect.y = self.pos[1]
         Enemy.numberOfOnscreenEnemies += 1
+
+        self.healthBar = HealthBar(self)
 
     def calculate_damage(self):
         """

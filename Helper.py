@@ -4,6 +4,17 @@ REFRESH_RATE = 60
 RESOLUTION = (750, 1334)
 DISPLAY_SURFACE = pygame.display.set_mode(RESOLUTION)
 
+# colours
+GREEN = (0, 255, 0)
+YELLOW = (255, 255, 0)
+RED = (255, 0, 0)
+WHITE = (255, 255, 255)
+
+# health bar dimensions
+HEALTH_BAR_SIZE = (137, 8)
+HEALTH_BAR_THRESHOLDS = [.3, .6, .9]
+HEALTH_BAR_COLOURS = [RED, YELLOW, GREEN, WHITE]
+
 # Lane positions and whether or not they are occupied
 LANES = dict(
     left=[(150, 250), False],

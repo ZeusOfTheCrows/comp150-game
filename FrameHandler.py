@@ -124,6 +124,8 @@ def update(player, player_action):
     :param player_action: input action, as defined in event_handler()
     ===========================================================================
     """
+    for bar in Entity.health_bars:
+        bar.health_bar_update()
 
     if 'idle' in player_action and player.is_moving:
         player_action = player.move_direction
@@ -153,6 +155,11 @@ def renderer():  # to be called every frame to render every image in a list
     Room.move_room()
 
     Helper.DISPLAY_SURFACE.blit(Player.Player.playerSurf, Player.Player.playerPos)
+
+    for bar in Entity.health_bars:
+        bar_surface = pygame.Surface((bar.size[0], bar.size[1]))
+        bar_surface.fill(bar.colour)
+        Helper.DISPLAY_SURFACE.blit(bar_surface, (bar.pos[0], bar.pos[1]))
 
     if Player.Player.inventoryIsOpen:
         Helper.DISPLAY_SURFACE.blit(
