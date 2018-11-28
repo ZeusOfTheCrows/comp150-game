@@ -29,10 +29,10 @@ pygame.time.set_timer(Helper.UPDATETIME, Helper.t)
 
 pygame.font.init()
 
-FONT_INVERTED = pygame.font.SysFont('Inverted Regular',
-                                    Helper.DEFAULT_FONT_SIZE)
-FONT_INVERTED_SMALL = pygame.font.SysFont('Inverted Regular',
-                                          int(Helper.DEFAULT_FONT_SIZE - 6))
+FONT_DISPLAY = pygame.font.Font(Helper.FONTS['Display'],
+                                Helper.DEFAULT_FONT_SIZE)
+FONT_DISPLAY_SMALL = pygame.font.Font(Helper.FONTS['Sans'],
+                                      int(Helper.DEFAULT_FONT_SIZE - 6))
 
 
 def save_game(player):
@@ -250,9 +250,9 @@ def renderer():  # to be called every frame to render every image in a list
         if time_since_last_display + display_time < pygame.time.get_ticks():
             message_to_display = ''
 
-    text_surface = FONT_INVERTED.render(message_to_display,
-                                        False,
-                                        Helper.WHITE)
+    text_surface = FONT_DISPLAY.render(message_to_display,
+                                       False,
+                                       Helper.WHITE)
 
     if text_surface.get_width() > Helper.DISPLAY_SURFACE.get_width():
         messages = message_to_display.split(',')
@@ -263,17 +263,17 @@ def renderer():  # to be called every frame to render every image in a list
                     display_messages.insert(0 + index, message)
                     index += 1
 
-        text_surface = FONT_INVERTED.render('',
-                                            False,
-                                            Helper.WHITE)
+        text_surface = FONT_DISPLAY.render('',
+                                           False,
+                                           Helper.WHITE)
 
     stats = [
         str('Level : ' + str(Player.Player.playerInstance.level)),
-        str('HP:'
+        str('HP : '
             + str(Player.Player.playerInstance.max_health)
             + '/'
             + str(Player.Player.playerInstance.health)),
-        str('XP:'
+        str('XP : '
             + str(Player.Player.playerInstance.exp)
             + '/'
             + str(Player.Player.playerInstance.exp_to_level_up))
@@ -286,9 +286,9 @@ def renderer():  # to be called every frame to render every image in a list
         )
 
     for stat_index in range(0, len(stats)):
-        stat_surface = FONT_INVERTED_SMALL.render(stats[stat_index],
-                                                  False,
-                                                  Helper.BLACK)
+        stat_surface = FONT_DISPLAY_SMALL.render(stats[stat_index],
+                                                 False,
+                                                 Helper.BLACK)
         Helper.DISPLAY_SURFACE.blit(stat_surface,
                                     (Helper.INVENTORY_POSITION[0] + 40,
                                      Helper.INVENTORY_POSITION[1] + 20
