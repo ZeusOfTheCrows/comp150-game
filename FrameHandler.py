@@ -36,6 +36,14 @@ FONT_INVERTED_SMALL = pygame.font.SysFont('Inverted Regular',
 
 
 def save_game(player):
+    """
+    ===========================================================================
+    Simple save game function.
+
+    :param player: main instance of player class
+    :return: true if the games has been saved
+    ===========================================================================
+    """
     save_data = player
     display_messages.append('Saving game...')
     pickle.dump(save_data, open("savegame.p", "wb"))
@@ -43,6 +51,15 @@ def save_game(player):
 
 
 def populate_current_room():
+    """
+    ===========================================================================
+    Adds a random number of enemies to the current room.
+
+    :return: true if room has been filled, false if it already was
+    ===========================================================================
+    """
+
+    # todo: remove debug code
     display_messages.append('Populating current room...')
     if Room.current_room.is_populated is False:
         enemy_count = random.randint(1, 3)
@@ -55,6 +72,11 @@ def populate_current_room():
 
 
 def print_data():
+    """
+    ===========================================================================
+    Debug function, prints useful debug info to the terminal.
+    ===========================================================================
+    """
     if Room.next_room:
         print('Next room position is', str(Room.next_room.position))
     if Room.current_room:
@@ -116,11 +138,6 @@ def event_handler(game_state, player):
 
     if not room_is_populated:
         room_is_populated = populate_current_room()
-    # if Entity.Enemy.numberOfOnscreenEnemies < 3:
-    #     Entity.enemy_list.append(Entity.Enemy())
-    # elif event.key == K_h and Entity.Enemy.numberOfOnscreenEnemies > 0:
-    #     for enemy in Entity.enemy_list:
-    #         enemy.__del__() todo: remove
     if not Player.Player.is_moving and not Player.Player.isLeavingRoom:
         if len(Entity.enemy_list) == 0:
             Player.Player.isLeavingRoom = True
@@ -193,10 +210,10 @@ def renderer():  # to be called every frame to render every image in a list
         bar_background = pygame.Surface((bar.size[0], bar.size[1]))
         bar_background.fill((0, 0, 0))
         bar_surface = pygame.Surface((bar.size[0] *
-                                      (
-                                              bar.health / bar.max_health
-                                      ),
-                                      bar.size[1]))
+                                      (bar.health / bar.max_health),
+                                      bar.size[1]
+                                      ))
+
         bar_surface.fill(bar.colour)
         Helper.DISPLAY_SURFACE.blit(bar_background, (bar.pos[0], bar.pos[1]))
         Helper.DISPLAY_SURFACE.blit(bar_surface, (bar.pos[0], bar.pos[1]))

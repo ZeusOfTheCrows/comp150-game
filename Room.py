@@ -2,10 +2,13 @@ import ImageFiles
 import random
 import Helper
 
-# Classes used by Room type Objects
-
 
 class Room:
+    """
+    ---------------------------------------------------------------------------
+    Class used by Room type Objects. Contains functions for changing room.
+    ---------------------------------------------------------------------------
+    """
     rooms_index = 0
     rooms_list = []     # should usually contain 3 rooms tops
 
@@ -44,29 +47,43 @@ class Room:
             Room.next_room = self
 
     @staticmethod
-    def remove_room(room):
+    def remove_prev_room():
+        """
+        =======================================================================
+        Simple function to remove the previous room.
+        =======================================================================
+        """
+
         Room.prev_room = None
         del Room.rooms_list[0]
 
     @staticmethod
     def advance_room():
-        # print('Rooms list:', str(Room.rooms_list))
+        """
+        =======================================================================
+        Simple function to advance to the next room.
+        =======================================================================
+        """
+
         if Room.prev_room:
-            # print('Removing room',str(Room.prev_room))
-            Room.remove_room(Room.prev_room)
+            Room.remove_prev_room()
         Room.prev_room = Room.current_room
         Room.prev_room.position[1] -= Room.room_move_speed
         Room.current_room = Room.next_room
         Room.current_room.position[1] -= Room.room_move_speed
-        Room.next_room = Room()     # TODO: initialize here or outside?
+        Room.next_room = Room()     # TODO: initialise here or outside?
 
     @staticmethod
     def move_room():
+        """
+        =======================================================================
+        Simple function to animate moving to the next room.
+        =======================================================================
+        """
+
         if Room.current_room.position[1] < Room.current_room_x:
-            # print('Moving next room by', Room.room_move_speed)
             Room.current_room.position[1] += Room.room_move_speed
         if Room.prev_room:
             if Room.prev_room.position[1] < Room.prev_room_x:
-                # print('Moving current room by', Room.room_move_speed)
                 Room.prev_room.position[1] += Room.room_move_speed
 

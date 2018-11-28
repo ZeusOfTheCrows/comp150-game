@@ -42,9 +42,9 @@ while running:
         if loaded_data:
             aux_player = loaded_data
             print(aux_player.health)
-        player_action, game_state = FrameHandler.event_handler(
-            game_state,
-            player)
+        player_action, game_state = FrameHandler.event_handler(game_state,
+                                                               player
+                                                               )
 
         # action handling section
         FrameHandler.update(player, player_action)

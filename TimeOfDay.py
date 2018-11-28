@@ -1,8 +1,12 @@
 import Helper
-import Entity
 
 
 class TimeOfDay:
+    """
+    ---------------------------------------------------------------------------
+    Class containing function to change monster buff based on time of day.
+    ---------------------------------------------------------------------------
+    """
 
     CurrentTime = 'perhaps'
     PreviousTime = CurrentTime
@@ -10,6 +14,15 @@ class TimeOfDay:
 
     @staticmethod
     def update_time_of_day(current_time):
+        """
+        =======================================================================
+        Function to calculate buff of monsters based on current time of day.
+        
+        :param current_time: time in YYYY-MM-DD hh:mm:ss.SSSSSS format
+        :return: message to be displayed - how strong enemies are.
+        =======================================================================
+        """
+
         message = ''
         if Helper.TIME_OF_DAY['morning'][0][0] \
                 >= current_time.hour * 100 + current_time.minute \

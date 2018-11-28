@@ -132,20 +132,32 @@ def highlight_buttons(mouse_x, mouse_y, make_continue_clickable):
     """
 
     if buttons['buttonNewGame'].collidepoint(mouse_x, mouse_y):
-        pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['buttonNewGame'])
+        pygame.draw.rect(DISPLAY_SURFACE,
+                         HIGHLIGHT,
+                         buttons['buttonNewGame']
+                         )
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHNEWGAME, (130, 484))
 
     elif buttons['buttonContinue'].collidepoint(mouse_x, mouse_y):
         if make_continue_clickable:
-            pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['buttonContinue'])
+            pygame.draw.rect(DISPLAY_SURFACE,
+                             HIGHLIGHT,
+                             buttons['buttonContinue']
+                             )
             DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHCONTINUE, (480, 484))
 
     elif buttons['buttonSettings'].collidepoint(mouse_x, mouse_y):
-        pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['buttonSettings'])
+        pygame.draw.rect(DISPLAY_SURFACE,
+                         HIGHLIGHT,
+                         buttons['buttonSettings']
+                         )
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHSETTINGS, (130, 684))
 
     elif buttons['buttonQuit'].collidepoint(mouse_x, mouse_y):
-        pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['buttonQuit'])
+        pygame.draw.rect(DISPLAY_SURFACE,
+                         HIGHLIGHT,
+                         buttons['buttonQuit']
+                         )
         DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHQUIT, (510, 684))
 
 
@@ -166,8 +178,8 @@ def highlight_settings_buttons(mouse_x, mouse_y):
 def menu_update():
     """
     ===========================================================================
-    todo: fill this in.
-        Also, why is there a while loop outside of the main loop @joycourier?
+    todo: fill this in. @joycourier
+        Also, why is there a while loop outside of the main loop?
     ===========================================================================
     """
 
@@ -204,8 +216,8 @@ def menu_update():
 def settings_menu_update():
     """
     ===========================================================================
-    todo: fill this in.
-        Also, why is there a while loop outside of the main loop @joycourier?
+    todo: fill this in. @joycourier
+        Also, why is there a while loop outside of the main loop?
     ===========================================================================
     """
 

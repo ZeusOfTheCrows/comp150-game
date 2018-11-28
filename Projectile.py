@@ -60,8 +60,10 @@ class PlayerProjectile:
             if Player.Player.weaponEquipped \
             else Player.Player.baseDamage
 
-        self.pos_x = self.rect.x = Player.Player.playerPos[0] + self.rect.width/2
-        self.pos_y = self.rect.y = Player.Player.playerPos[1] + self.rect.height/2
+        self.pos_x = self.rect.x = Player.Player.playerPos[0] + \
+            self.rect.width/2
+        self.pos_y = self.rect.y = Player.Player.playerPos[1] + \
+            self.rect.height/2
 
         attackSprites.append(self)
 
