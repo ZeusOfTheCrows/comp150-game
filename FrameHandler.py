@@ -201,16 +201,16 @@ def renderer():  # to be called every frame to render every image in a list
         Helper.DISPLAY_SURFACE.blit(bar_background, (bar.pos[0], bar.pos[1]))
         Helper.DISPLAY_SURFACE.blit(bar_surface, (bar.pos[0], bar.pos[1]))
 
+    for projectile in Projectile.attackSprites:
+        Helper.DISPLAY_SURFACE.blit(projectile.sprite,
+                                    (projectile.pos_x, projectile.pos_y)
+                                    )
+
     if Player.Player.inventoryIsOpen:
         Helper.DISPLAY_SURFACE.blit(
             ImageFiles.images['UI']['Inventory_Background'],
             Helper.INVENTORY_POSITION
         )
-
-    for projectile in Projectile.attackSprites:
-        Helper.DISPLAY_SURFACE.blit(projectile.sprite,
-                                    (projectile.pos_x, projectile.pos_y)
-                                    )
 
     for enemy in Entity.enemy_list:
         Helper.DISPLAY_SURFACE.blit(enemy.sprite, enemy.pos)
@@ -247,7 +247,7 @@ def renderer():  # to be called every frame to render every image in a list
                                             Helper.WHITE)
 
     stats = [
-        str(Player.Player.playerInstance.level),
+        str('Level : ' + str(Player.Player.playerInstance.level)),
         str('HP:'
             + str(Player.Player.playerInstance.max_health)
             + '/'
