@@ -65,6 +65,10 @@ class PlayerProjectile:
 
         attackSprites.append(self)
 
+    @staticmethod
+    def grant_exp(amount):
+        Player.Player.gain_exp(amount)
+
     def update(self):
 
         collision_with_enemy = False

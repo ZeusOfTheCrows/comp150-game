@@ -2,6 +2,7 @@ import pygame
 import random
 import ImageFiles
 import Helper
+import copy
 from Helper import HEALTH_BAR_THRESHOLDS as THRESHOLDS
 from Helper import HEALTH_BAR_COLOURS as COLOURS
 import Projectile
@@ -71,7 +72,10 @@ class Entity:
     def __init__(self):
         # subname is a unique identifier that uses the index
         self.subname = 'Entity' + str(Entity.entity_index)
-        name = 'Placeholder name'
+
+        # name for flavour
+        self.name = 'Placeholder name'
+
         # Importing index into the Entity-specific variable
         self.index = Entity.entity_index
 
@@ -82,8 +86,14 @@ class Entity:
         self.on_encounter = False
         self.on_battle = False
 
+        # level of entity
+        self.level = 1
+
         # setting alignment to passive as a default
         self.alignment = Entity.entity_alignment[1]
+
+        # setting all stats to the default values from the Helper
+        self.stats = copy.deepcopy(Helper.STATS)
 
         # To do: define states, as to specify what
         # images and animations to incorporate into lists
@@ -101,24 +111,39 @@ class Enemy(Entity):
 
     def __init__(self, room=None):
         Entity.__init__(self)
+
+        if room is None:
+            raise(ValueError, 'Room not specified for enemy')
+
         self.on_battle = True
         self.room = room
+
+        self.level = random.randint(max(0, room.index - 5), room.index)
+
+        for stat_key in self.stats.keys():
+            self.stats[stat_key]['Value'] += random.randint(
+                min(self.level, room.index),
+                max(self.level, room.index))
+
         self.alignment = Entity.entity_alignment[0]
-        self.health = max(10, int(Entity.defaultHealth * (room.index / 10)))  # * (enemyLevel * 0.1)
+
+        self.health = self.stats['CON']['Value'] * 10 + 5 * self.level
+
         self.sprite = ImageFiles.images['Enemy']  # [random.randint(0, len(ImageFiles.images) - 1)]
-        self.chance_to_attack = 10 * room.index + 1
+
+        self.chance_to_attack = 10 + 5 * self.stats['DEX']['Value']
 
         self.last_attack = pygame.time.get_ticks()
 
         self.attack_cooldown = \
-            random.randint(300, 500) - room.index * 10
+            random.randint(300, 500) - int(self.stats['DEX']['Value'] ** 1.1)
 
         self.max_attack_chance = 1000
 
         lane_is_occupied = True
         self.lane_key = 'middle'
 
-        self.base_damage = 10 + random.randint(0, room.index)
+        self.base_damage = self.stats['STR']['Value']
 
         self.damage = self.calculate_damage
 
@@ -151,7 +176,9 @@ class Enemy(Entity):
         :return: damage to enemy
         =======================================================================
         """
-        return self.base_damage * TimeOfDay.TimeOfDay.MonsterBuff
+        return self.base_damage\
+            * TimeOfDay.TimeOfDay.MonsterBuff\
+            * int(self.stats['STR']['Value'] ** 1.3)
 
     def is_hit(self, damage):
         """
@@ -165,6 +192,7 @@ class Enemy(Entity):
         # print('\'tis a hit: ' + str(self.health) + ' hp remaining')
         # play_sound(enemy_hit)
         if self.health <= 0:
+            Projectile.PlayerProjectile.grant_exp(100 * self.level)
             self.__del__()
 
     def enemy_attack(self):
