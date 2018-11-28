@@ -25,6 +25,9 @@ LANES = dict(
 # distance moved for input to be registered as a swipe
 SWIPE_DISTANCE = 90
 
+# time for player to be allowed to hold down a swipe
+MAX_SWIPE_TIME = 80
+
 # distance the onscreen character moves
 MOVE_DISTANCE = LANES['middle'][0][0] - LANES['left'][0][0]
 

@@ -4,9 +4,13 @@ import pygame
 from pygame.locals import *
 
 pygame.init()
+# inputTimer = pygame.time.Clock()
+
 
 # variables
 swipeDistance = Helper.SWIPE_DISTANCE
+maxSwipeTime = Helper.MAX_SWIPE_TIME
+readingMouseChange = False
 
 
 def read_mouse_movements(mouse_position):
@@ -21,18 +25,29 @@ def read_mouse_movements(mouse_position):
 
     mouse_down_x, mouse_down_y = mouse_position
     input_command = 'none'
+    elapsed_time = pygame.time.get_ticks()  # used for timer
 
-    reading_mouse_change = True
-    while reading_mouse_change:  # while loop to read mouse/swipe movements
+    global readingMouseChange
+    readingMouseChange = True
+    while readingMouseChange:  # while loop to read mouse/swipe movements
 
         for event in pygame.event.get():
 
-            if event.type == MOUSEBUTTONUP:
+            # if the mouse button has been release, or the specified time has elapsed
+            if event.type == MOUSEBUTTONUP or (pygame.time.get_ticks() -
+                                               elapsed_time) >= maxSwipeTime:
+
+                # sets the mouse position manually, as otherwise there would be no event position
+                if (pygame.time.get_ticks() - elapsed_time) >= maxSwipeTime:
+                    event.pos = pygame.mouse.get_pos()
+                    # todo:comment this @zeus
 
                 mouse_up_x, mouse_up_y = event.pos
                 input_distance_h = mouse_up_x - mouse_down_x
                 input_distance_v = mouse_up_y - mouse_down_y
-                reading_mouse_change = False
+
+                # global readingMouseChange
+                readingMouseChange = False
 
                 if input_distance_h >= swipeDistance:
                     input_command = 'move_right'
