@@ -161,4 +161,3 @@ STATS = dict(
 # default exp required for level up
 
 EXP_REQUIRED = 100
-

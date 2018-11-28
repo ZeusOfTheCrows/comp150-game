@@ -29,8 +29,10 @@ pygame.time.set_timer(Helper.UPDATETIME, Helper.t)
 
 pygame.font.init()
 
-FONT_INVERTED = pygame.font.SysFont('Inverted Regular', Helper.DEFAULT_FONT_SIZE)
-FONT_INVERTED_SMALL = pygame.font.SysFont('Inverted Regular', int(Helper.DEFAULT_FONT_SIZE - 6))
+FONT_INVERTED = pygame.font.SysFont('Inverted Regular',
+                                    Helper.DEFAULT_FONT_SIZE)
+FONT_INVERTED_SMALL = pygame.font.SysFont('Inverted Regular',
+                                          int(Helper.DEFAULT_FONT_SIZE - 6))
 
 
 def save_game(player):
@@ -175,19 +177,26 @@ def renderer():  # to be called every frame to render every image in a list
     """
 
     if Room.prev_room:
-        Helper.DISPLAY_SURFACE.blit(Room.prev_room.texture, Room.prev_room.position)
-    Helper.DISPLAY_SURFACE.blit(Room.current_room.texture, Room.current_room.position)
-    Helper.DISPLAY_SURFACE.blit(Room.next_room.texture, Room.next_room.position)
+        Helper.DISPLAY_SURFACE.blit(Room.prev_room.texture,
+                                    Room.prev_room.position)
+    Helper.DISPLAY_SURFACE.blit(Room.current_room.texture,
+                                Room.current_room.position)
+    Helper.DISPLAY_SURFACE.blit(Room.next_room.texture,
+                                Room.next_room.position)
 
     Room.move_room()
 
-    Helper.DISPLAY_SURFACE.blit(Player.Player.playerSurf, Player.Player.playerPos)
+    Helper.DISPLAY_SURFACE.blit(Player.Player.playerSurf,
+                                Player.Player.playerPos)
 
     for bar in Entity.health_bars:
         bar_background = pygame.Surface((bar.size[0], bar.size[1]))
         bar_background.fill((0, 0, 0))
         bar_surface = pygame.Surface((bar.size[0] *
-                                      (bar.health / bar.max_health), bar.size[1]))
+                                      (
+                                              bar.health / bar.max_health
+                                      ),
+                                      bar.size[1]))
         bar_surface.fill(bar.colour)
         Helper.DISPLAY_SURFACE.blit(bar_background, (bar.pos[0], bar.pos[1]))
         Helper.DISPLAY_SURFACE.blit(bar_surface, (bar.pos[0], bar.pos[1]))
@@ -237,19 +246,33 @@ def renderer():  # to be called every frame to render every image in a list
                                             False,
                                             Helper.WHITE)
 
-    stats = []
-    stats.append(str(Player.Player.playerInstance.level))
-    stats.append('HP:' + str(Player.Player.playerInstance.max_health) + '/' + str(Player.Player.playerInstance.health))
-    stats.append('XP:' + str(Player.Player.playerInstance.exp) + '/' + str(Player.Player.playerInstance.exp_to_level_up))
+    stats = [
+        str(Player.Player.playerInstance.level),
+        str('HP:'
+            + str(Player.Player.playerInstance.max_health)
+            + '/'
+            + str(Player.Player.playerInstance.health)),
+        str('XP:'
+            + str(Player.Player.playerInstance.exp)
+            + '/'
+            + str(Player.Player.playerInstance.exp_to_level_up))
+    ]
 
     for stat_key in Player.Player.playerInstance.stats.keys():
-        stats.append(stat_key + ' : ' + str(Player.Player.playerInstance.stats[stat_key]['Value']))
+        stats.append(
+            stat_key + ' : '
+            + str(Player.Player.playerInstance.stats[stat_key]['Value'])
+        )
 
     for stat_index in range(0, len(stats)):
         stat_surface = FONT_INVERTED_SMALL.render(stats[stat_index],
-                                            False,
-                                            Helper.BLACK)
-        Helper.DISPLAY_SURFACE.blit(stat_surface, (Helper.INVENTORY_POSITION[0] + 80, Helper.INVENTORY_POSITION[1] + 40 * stat_index + 80))
+                                                  False,
+                                                  Helper.BLACK)
+        Helper.DISPLAY_SURFACE.blit(stat_surface,
+                                    (Helper.INVENTORY_POSITION[0] + 40,
+                                     Helper.INVENTORY_POSITION[1] + 20
+                                     * stat_index + 100)
+                                    )
         stat_index += 1
 
     stats.clear()
@@ -259,4 +282,3 @@ def renderer():  # to be called every frame to render every image in a list
 
     pygame.time.Clock().tick(Helper.REFRESH_RATE)
     pygame.display.flip()
-

@@ -21,10 +21,10 @@ class EnemyProjectile:
         self.damage = parent_enemy.damage()
         self.parent = parent_enemy
 
-        self.pos_y = self.rect.y = Helper.LANES[lane][0][1] \
-                                   - int(self.rect.height/2)
-        self.pos_x = self.rect.x = Helper.LANES[lane][0][0] \
-                                   - int(self.rect.width/2)
+        self.pos_y = self.rect.y = Helper.LANES[lane][0][1] - \
+            int(self.rect.height/2)
+        self.pos_x = self.rect.x = Helper.LANES[lane][0][0] - \
+            int(self.rect.width/2)
 
         attackSprites.append(self)
 
@@ -86,4 +86,3 @@ class PlayerProjectile:
         elif collision_with_enemy is True:
             attackSprites.remove(self)
             del self
-
