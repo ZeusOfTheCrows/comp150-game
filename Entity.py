@@ -20,7 +20,10 @@ health_bars = []
 class HealthBar:
 
     def __init__(self, entity):
-        self.size = Helper.HEALTH_BAR_SIZE
+        self.size = [entity.sprite.get_width()
+                     if type(entity) == Enemy
+                     else entity.playerSurf.get_width(),
+                     Helper.HEALTH_BAR_SIZE[1]]
         self.max_health = entity.health
         self.health = self.max_health
         self.parent = entity

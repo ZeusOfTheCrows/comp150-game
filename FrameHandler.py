@@ -8,6 +8,7 @@ import Projectile
 import datetime
 import TimeOfDay
 import pickle
+import Item
 import random
 from Room import Room
 from pygame.locals import *
@@ -88,6 +89,10 @@ def print_data():
           str(Room.prev_room_x))
     print('Movement step is', str(Room.room_move_speed))
 
+    print('Player Backpack contains:')
+    for item in Player.Player.Backpack.items:
+        print(item.name)
+
 
 def clean_room():
     """
@@ -131,6 +136,9 @@ def event_handler(game_state, player):
                 game_state = 'Main_Menu'
             elif event.key == K_m:
                 print_data()
+            elif event.key == K_a:
+                Player.Player.Inventory.add_item(Item.Weapon(add_to_backpack=True))
+                Player.Player.Backpack.add_item(Player.Player.Inventory)
         elif event.type == MOUSEBUTTONDOWN:
             player_action = Inputs.read_mouse_down(event.pos)
         elif event.type == MOUSEBUTTONUP:
@@ -279,6 +287,8 @@ def renderer():  # to be called every frame to render every image in a list
             + str(Player.Player.playerInstance.exp_to_level_up))
     ]
 
+    vertical_offset = 500 if not Player.Player.inventoryIsOpen else 0
+
     for stat_key in Player.Player.playerInstance.stats.keys():
         stats.append(
             stat_key + ' : '
@@ -292,11 +302,37 @@ def renderer():  # to be called every frame to render every image in a list
         Helper.DISPLAY_SURFACE.blit(stat_surface,
                                     (Helper.INVENTORY_POSITION[0] + 40,
                                      Helper.INVENTORY_POSITION[1] + 20
-                                     * stat_index + 100)
+                                     * stat_index + 100 + vertical_offset)
                                     )
         stat_index += 1
 
     stats.clear()
+
+    for slot in range(0, Player.Player.Backpack.size):
+        item_surf = None if slot > len(Player.Player.Backpack.items) - 1\
+            else Player.Player.Backpack.items[slot].\
+            weapon_thumbnail.convert_alpha() \
+            if type(Player.Player.Backpack.items[slot]) == Item.Weapon \
+            else None
+
+        if item_surf is None:
+            item_surf = pygame.Surface((80, 80))
+            item_surf.fill(Helper.WHITE)
+
+        row = 0 if slot < int(Player.Player.Backpack.size / 2) else 1
+        column = slot if slot < int(Player.Player.Backpack.size / 2)\
+            else slot - Player.Player.Backpack.size / 2
+
+        position = [
+            Helper.INVENTORY_POSITION[0] + 350 + (item_surf.get_width() + 20) *
+            column,
+            Helper.INVENTORY_POSITION[1] + 100 + (item_surf.get_height() + 20) *
+            row + vertical_offset
+        ]
+
+        Helper.DISPLAY_SURFACE.blit(item_surf, position)
+
+        del item_surf
 
     Helper.DISPLAY_SURFACE.blit(text_surface,
                                 (10, 10))
