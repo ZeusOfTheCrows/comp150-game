@@ -102,7 +102,8 @@ class Entity:
 class Enemy(Entity):
     """
     ---------------------------------------------------------------------------
-    Enemy class. Class of enemies.
+    Enemy class. Used for creating entities that attack the player regularly.
+    Their stats increase along with the room they are in
     ---------------------------------------------------------------------------
     """
     # todo: fill this in ^
