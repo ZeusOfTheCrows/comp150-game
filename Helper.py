@@ -161,3 +161,10 @@ STATS = dict(
 # default exp required for level up
 
 EXP_REQUIRED = 100
+
+# dictionary for fonts
+
+FONTS = dict(
+    Display='./Resources/Visual/Fonts/inverted.ttf',
+    Sans='./Resources/Visual/Fonts/rounded-pixelfont.ttf'
+)
