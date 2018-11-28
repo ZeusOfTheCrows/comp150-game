@@ -8,6 +8,12 @@ import random
 
 
 class Player(Entity.Entity):
+    """
+    Player class. Used for instantiating the Player.
+    Most functions are static, given that there can only be a single instance
+    of the Player. Attempting to create multiple instances will result in
+    an error.
+    """
 
     is_moving = False
     move_direction = ''
