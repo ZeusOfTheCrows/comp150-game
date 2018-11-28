@@ -1,18 +1,16 @@
 import pygame
 import sys
 import Helper
-import MenuHelper
-import pickle
 from pygame.locals import *
 
 pygame.init()
 pygame.font.init()
 
-BLACK = MenuHelper.BLACK
-BRONZE = MenuHelper.BRONZE
-GOLD = MenuHelper.GOLD
-HIGHLIGHT = MenuHelper.HIGHLIGHT
-DARK_GRAY = MenuHelper.DARK_GRAY
+BLACK = Helper.BLACK
+BRONZE = Helper.BRONZE
+GOLD = Helper.GOLD
+HIGHLIGHT = Helper.HIGHLIGHT
+DARK_GRAY = Helper.DARK_GRAY
 
 FPS = 60
 FPS_CLOCK = pygame.time.Clock()
@@ -39,25 +37,21 @@ def draw_menu(continue_button_clickable):
     """
 
     pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['buttonNewGame'])
-    DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_NEWGAME, (130, 484))
+    DISPLAY_SURFACE.blit(Helper.TEXTSURF_NEWGAME, (130, 484))
 
     pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['buttonSettings'])
-    DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_SETTINGS, (130, 684))
+    DISPLAY_SURFACE.blit(Helper.TEXTSURF_SETTINGS, (130, 684))
 
     pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['buttonQuit'])
-    DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_QUIT, (510, 684))
+    DISPLAY_SURFACE.blit(Helper.TEXTSURF_QUIT, (510, 684))
 
     if continue_button_clickable:
         pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['buttonContinue'])
-        DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_CONTINUE, (480, 484))
+        DISPLAY_SURFACE.blit(Helper.TEXTSURF_CONTINUE, (480, 484))
 
     elif not continue_button_clickable:
         pygame.draw.rect(DISPLAY_SURFACE, DARK_GRAY, buttons['buttonContinue'])
-        DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_BLACKCONTINUE, (480, 484))
-
-    else:  # todo: remove debug code? @joycourier
-        raise ValueError('\'save_file_exists\' is neither true nor false.'
-                         'This is not Schrodinger\'s save_file, fix it.')
+        DISPLAY_SURFACE.blit(Helper.TEXTSURF_BLACKCONTINUE, (480, 484))
 
 
 def draw_settings_menu():
@@ -68,10 +62,10 @@ def draw_settings_menu():
     """
 
     pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['settingsBackground'])
-    DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_DESPACITO, (625, 940))
+    DISPLAY_SURFACE.blit(Helper.TEXTSURF_DESPACITO, (625, 940))
 
     pygame.draw.rect(DISPLAY_SURFACE, GOLD, buttons['settingsExit'])
-    DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_SETTINGSEXIT, (80, 910))
+    DISPLAY_SURFACE.blit(Helper.TEXTSURF_SETTINGSEXIT, (80, 910))
 
 
 def check_buttons(click_pos, save_file_exists):
@@ -136,7 +130,7 @@ def highlight_buttons(mouse_x, mouse_y, make_continue_clickable):
                          HIGHLIGHT,
                          buttons['buttonNewGame']
                          )
-        DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHNEWGAME, (130, 484))
+        DISPLAY_SURFACE.blit(Helper.TEXTSURF_HIGHNEWGAME, (130, 484))
 
     elif buttons['buttonContinue'].collidepoint(mouse_x, mouse_y):
         if make_continue_clickable:
@@ -144,21 +138,21 @@ def highlight_buttons(mouse_x, mouse_y, make_continue_clickable):
                              HIGHLIGHT,
                              buttons['buttonContinue']
                              )
-            DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHCONTINUE, (480, 484))
+            DISPLAY_SURFACE.blit(Helper.TEXTSURF_HIGHCONTINUE, (480, 484))
 
     elif buttons['buttonSettings'].collidepoint(mouse_x, mouse_y):
         pygame.draw.rect(DISPLAY_SURFACE,
                          HIGHLIGHT,
                          buttons['buttonSettings']
                          )
-        DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHSETTINGS, (130, 684))
+        DISPLAY_SURFACE.blit(Helper.TEXTSURF_HIGHSETTINGS, (130, 684))
 
     elif buttons['buttonQuit'].collidepoint(mouse_x, mouse_y):
         pygame.draw.rect(DISPLAY_SURFACE,
                          HIGHLIGHT,
                          buttons['buttonQuit']
                          )
-        DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHQUIT, (510, 684))
+        DISPLAY_SURFACE.blit(Helper.TEXTSURF_HIGHQUIT, (510, 684))
 
 
 def highlight_settings_buttons(mouse_x, mouse_y):
@@ -172,7 +166,7 @@ def highlight_settings_buttons(mouse_x, mouse_y):
 
     if buttons['settingsExit'].collidepoint(mouse_x, mouse_y):
         pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['settingsExit'])
-        DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHSETTINGSEXIT, (80, 910))
+        DISPLAY_SURFACE.blit(Helper.TEXTSURF_HIGHSETTINGSEXIT, (80, 910))
 
 
 def menu_update():
