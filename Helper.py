@@ -47,10 +47,10 @@ TEXT_DISPLAY_POSITION = (RESOLUTION[0] / 2, 250)
 TEXT_DISPLAY_DELAY = 2000
 
 # for how long the text is displayed
-TEXT_DISPLAY_TIME = 4000
+TEXT_DISPLAY_TIME = 1500
 
 # default font size
-DEFAULT_FONT_SIZE = 32
+DEFAULT_FONT_SIZE = 24
 
 # Tuples containing elements for naming items, rooms_list, entities etc
 Affinities = ('Chaos', 'Abyss', 'Void', 'Eldritch')

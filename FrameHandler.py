@@ -226,9 +226,7 @@ def renderer():  # to be called every frame to render every image in a list
                                             Helper.WHITE)
 
     Helper.DISPLAY_SURFACE.blit(text_surface,
-                                (display_position[0]
-                                 - int(text_surface.get_width() / 2),
-                                 display_position[1] + 200))
+                                (10, 10))
 
     pygame.time.Clock().tick(Helper.REFRESH_RATE)
     pygame.display.flip()
