@@ -68,9 +68,9 @@ class Player(Entity.Entity):
     def update_stats(player):
         Player.max_health += int(player.stats['CON']['Value'] ** 1.99)
         Player.health = Player.max_health
-        Player.projectileSpeed += int(player.stats['AGL']['Value'] ** 0.1)
-        Player.attackCooldown -= int(player.stats['DEX']['Value'] ** 1.1)
-        Player.moveSpeed += int(player.stats['AGL']['Value'] ** 0.01)
+        Player.projectileSpeed += int(player.stats['AGL']['Value'] ** 0.01)
+        Player.attackCooldown -= int(player.stats['DEX']['Value'] ** 1.01)
+        Player.moveSpeed += int(player.stats['AGL']['Value'] ** 0.001)
         Player.baseDamage += int(player.stats['STR']['Value'] ** 0.5)
         del Player.healthBar
         Player.healthBar = Entity.HealthBar(Player)
