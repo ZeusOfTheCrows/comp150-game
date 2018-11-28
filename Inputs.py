@@ -10,7 +10,7 @@ pygame.init()
 # variables
 swipeDistance = Helper.SWIPE_DISTANCE
 maxSwipeTime = Helper.MAX_SWIPE_TIME
-readingMouseChange = False
+# readingMouseChange = False
 
 
 def read_mouse_movements(mouse_position):
@@ -64,3 +64,46 @@ def read_mouse_movements(mouse_position):
 
                 # player.player_action(input_command)
                 return input_command
+
+# todo: remove this monolithic mess ^ @zeus
+
+
+mouseDownX, mouseDownY = 0, 0
+readingMouseChange = False
+
+
+def read_mouse_down(mouse_position):
+    global mouseDownX, mouseDownY
+    mouseDownX, mouseDownY = mouse_position
+    input_command = 'none'
+    global readingMouseChange
+    readingMouseChange = True
+
+    return input_command
+
+
+def read_mouse_up(mouse_position):
+    mouse_up_x, mouse_up_y = mouse_position
+    input_distance_h = mouse_up_x - mouseDownX
+    input_distance_v = mouse_up_y - mouseDownY
+
+    global readingMouseChange
+    readingMouseChange = False
+
+    if input_distance_h >= swipeDistance:
+        input_command = 'move_right'
+    elif input_distance_h <= -swipeDistance:
+        input_command = 'move_left'
+    elif input_distance_v >= swipeDistance:
+        input_command = 'close_inv'
+    elif input_distance_v <= -swipeDistance:
+        input_command = 'open_inv'
+    elif abs(input_distance_h) < swipeDistance \
+            and \
+            abs(input_distance_v) < swipeDistance:
+        input_command = 'attack'
+    else:
+        input_command = 'none'
+
+    # player.player_action(input_command)
+    return input_command

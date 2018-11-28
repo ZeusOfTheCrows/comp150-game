@@ -105,8 +105,11 @@ def event_handler(game_state, player):
             elif event.key == K_m:
                 print_data()
         elif event.type == MOUSEBUTTONDOWN:
+            # todo: \/ might not need to exist \/
             if not player.is_moving and not player.isLeavingRoom:
-                player_action = Inputs.read_mouse_movements(event.pos)
+                player_action = Inputs.read_mouse_down(event.pos)
+        elif event.type == MOUSEBUTTONUP:
+            player_action = Inputs.read_mouse_up(event.pos)
 
     if not room_is_populated:
         room_is_populated = populate_current_room()
