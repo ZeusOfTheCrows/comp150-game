@@ -10,10 +10,9 @@ class Item:
     item_index = 0
     max_items_in_stack = 999
 
-    to_backpack = False
-
     def __init__(self):
         self.index = Item.item_index
+        self.to_backpack = False
         Item.item_index += 1
         self.current_items_in_inventory = 0
 
@@ -198,21 +197,28 @@ class Weapon(Item):
         return bonus
 
     @staticmethod
-    def generate_texture(modifiers, handle, blade, bonus):
+    def generate_texture(
+            modifiers, handle, blade, bonus, thumbnail=False
+    ):
         """Assembly of all textures required for weapon"""
         texture = pygame.Surface((168, 24))
         texture.blit(Weapon.generate_bonus(bonus, modifiers), (0, 0))
         texture.blit(Weapon.generate_blade(blade, modifiers), (0, 0))
         texture.blit(handle, (0, 0))
 
+        if thumbnail is True:
+            return pygame.transform.scale(texture.subsurface((0, 0, 24, 24)),
+                                          (80, 80))
         return texture
 
     @staticmethod
     def generate_damage(modifiers):
         pass
 
-    def __init__(self):
+    def __init__(self, add_to_backpack=False):
         Item.__init__(self)
+
+        self.to_backpack = add_to_backpack
 
         self.damage = Player.Player.baseDamage
 
@@ -231,7 +237,8 @@ class Weapon(Item):
             modifiers,
             ImageFiles.images['Handle_Thumbnail'],
             ImageFiles.images['Blade_Thumbnail'],
-            ImageFiles.images['Bonus_Thumbnail']
+            ImageFiles.images['Bonus_Thumbnail'],
+            thumbnail=True
         )
 
         self.type = weapon_type

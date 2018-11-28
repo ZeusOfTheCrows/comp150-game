@@ -43,7 +43,8 @@ class Player(Entity.Entity):
     inventoryIsOpen = False
     hasWeaponEquipped = False
     weaponEquipped = None
-
+    Inventory = None
+    Backpack = None
     player_destination = 0
 
     def __init__(self):
@@ -63,6 +64,10 @@ class Player(Entity.Entity):
         Player.healthBar = Entity.HealthBar(self)
 
         Player.playerInstance = self
+
+        Player.Inventory = Inventory.Inventory()
+
+        Player.Backpack = Inventory.Backpack()
 
     @staticmethod
     def update_stats(player):

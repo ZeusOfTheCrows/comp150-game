@@ -77,10 +77,12 @@ class Backpack(Inventory):
         for item in source_inventory.items:
             if item.to_backpack:
                 if Backpack.items_in < Backpack.size:
-                    # source_inventory.remove_item(item)
-                    Backpack.items.append(item)
-                    print('Added ' + item.name + ' to backpack successfully')
-                    Backpack.items_in += 1
+                    if not Backpack.items.__contains__(item):
+                        Backpack.items.append(item)
+                        print('Added ' + item.name + ' to backpack successfully')
+                        Backpack.items_in += 1
+                    else:
+                        print(item.name + ' already in backpack')
                 else:
                     print('Attempted to add '
                           + item.name +
