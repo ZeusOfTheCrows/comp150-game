@@ -73,6 +73,17 @@ readingMouseChange = False
 
 
 def read_mouse_down(mouse_position):
+    """
+    ===========================================================================
+    First half of the input function. Sets the mouse down position (to be used
+        in the next half), and sets "reading mouse change" to true.
+        This and read_mouse_up() read swipe inputs, input with the mouse on PC.
+
+    :param mouse_position: position of mouse button down.
+    :return: input command as a string (should always be 'none' at this stage).
+    ===========================================================================
+    """
+
     global mouseDownX, mouseDownY
     mouseDownX, mouseDownY = mouse_position
     input_command = 'none'
@@ -83,6 +94,18 @@ def read_mouse_down(mouse_position):
 
 
 def read_mouse_up(mouse_position):
+    """
+    ===========================================================================
+    Second half of the input function. Calculates swipe inputs, input with the
+        mouse on PC., based on the mouse coordinates from read_mouse_down(),
+                                    and sets "reading mouse change" to false.
+
+
+    :param mouse_position: position of mouse button up.
+    :return: input command as a string (ie. 'move_right').
+    ===========================================================================
+    """
+
     mouse_up_x, mouse_up_y = mouse_position
     input_distance_h = mouse_up_x - mouseDownX
     input_distance_v = mouse_up_y - mouseDownY
@@ -102,7 +125,7 @@ def read_mouse_up(mouse_position):
             and \
             abs(input_distance_v) < swipeDistance:
         input_command = 'attack'
-    else:
+    else:  # this should never happen, it's only in here as a failsafe.
         input_command = 'none'
 
     # player.player_action(input_command)
