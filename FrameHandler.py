@@ -22,12 +22,15 @@ display_time = Helper.TEXT_DISPLAY_TIME
 display_position = list(Helper.TEXT_DISPLAY_POSITION)
 time_since_last_display = pygame.time.get_ticks()
 message_to_display = ''
+current_player_level = 1
+new_player_level = 1
 
 pygame.time.set_timer(Helper.UPDATETIME, Helper.t)
 
 pygame.font.init()
 
 FONT_INVERTED = pygame.font.SysFont('Inverted Regular', Helper.DEFAULT_FONT_SIZE)
+FONT_INVERTED_SMALL = pygame.font.SysFont('Inverted Regular', int(Helper.DEFAULT_FONT_SIZE - 6))
 
 
 def save_game(player):
@@ -141,6 +144,13 @@ def update(player, player_action):
     :param player_action: input action, as defined in event_handler()
     ===========================================================================
     """
+
+    global current_player_level
+
+    if player.level != current_player_level:
+        current_player_level = player.level
+        display_messages.append('Leveled up!')
+
     for bar in Entity.health_bars:
         bar.health_bar_update()
 
@@ -226,6 +236,23 @@ def renderer():  # to be called every frame to render every image in a list
         text_surface = FONT_INVERTED.render('',
                                             False,
                                             Helper.WHITE)
+
+    stats = []
+    stats.append(str(Player.Player.playerInstance.level))
+    stats.append('HP:' + str(Player.Player.playerInstance.max_health) + '/' + str(Player.Player.playerInstance.health))
+    stats.append('XP:' + str(Player.Player.playerInstance.exp) + '/' + str(Player.Player.playerInstance.exp_to_level_up))
+
+    for stat_key in Player.Player.playerInstance.stats.keys():
+        stats.append(stat_key + ' : ' + str(Player.Player.playerInstance.stats[stat_key]['Value']))
+
+    for stat_index in range(0, len(stats)):
+        stat_surface = FONT_INVERTED_SMALL.render(stats[stat_index],
+                                            False,
+                                            Helper.BLACK)
+        Helper.DISPLAY_SURFACE.blit(stat_surface, (Helper.INVENTORY_POSITION[0] + 80, Helper.INVENTORY_POSITION[1] + 40 * stat_index + 80))
+        stat_index += 1
+
+    stats.clear()
 
     Helper.DISPLAY_SURFACE.blit(text_surface,
                                 (10, 10))

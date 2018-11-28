@@ -4,6 +4,7 @@ import ImageFiles
 import Inventory
 import Projectile
 import pygame
+import random
 
 
 class Player(Entity.Entity):
@@ -28,8 +29,11 @@ class Player(Entity.Entity):
     attackCooldown = Helper.PLAYER_ATTACK_COOLDOWN
     lastAttack = 0
     playerInstances = 0
+    playerInstance = None
     baseDamage = 50
+    moveSpeed = Helper.MOVE_SPEED
     health = 1
+    max_health = 1
     inventoryIsOpen = False
     hasWeaponEquipped = False
     weaponEquipped = None
@@ -42,9 +46,28 @@ class Player(Entity.Entity):
         else:
             raise ValueError('Attempted to create another instance of Player')
         Entity.Entity.__init__(self)
-        Player.health = Entity.Entity.defaultHealth
+
+        self.exp_to_level_up = Helper.EXP_REQUIRED
+        self.exp = 0
+
+        Player.max_health = Entity.Entity.defaultHealth * 100
+
+        Player.health = Player.max_health
 
         Player.healthBar = Entity.HealthBar(self)
+
+        Player.playerInstance = self
+
+    @staticmethod
+    def update_stats(player):
+        Player.max_health += int(player.stats['CON']['Value'] ** 1.99)
+        Player.health = Player.max_health
+        Player.projectileSpeed += int(player.stats['AGL']['Value'] ** 0.1)
+        Player.attackCooldown -= int(player.stats['DEX']['Value'] ** 1.1)
+        Player.moveSpeed += int(player.stats['AGL']['Value'] ** 0.01)
+        Player.baseDamage += int(player.stats['STR']['Value'] ** 0.5)
+        del Player.healthBar
+        Player.healthBar = Entity.HealthBar(Player)
 
     @staticmethod
     def player_action(player, action):
@@ -130,8 +153,8 @@ class Player(Entity.Entity):
             if player.playerPos[0] < player.player_destination \
                     and\
                     not player.inventoryIsOpen:
-                player.playerPos[0] += Helper.MOVE_SPEED
-                player.playerRect.x += Helper.MOVE_SPEED
+                player.playerPos[0] += Player.moveSpeed
+                player.playerRect.x += Player.moveSpeed
             else:
                 player.direction = ''
                 player.move_direction = ''  # see about putting in function
@@ -141,8 +164,8 @@ class Player(Entity.Entity):
             if player.playerPos[0] > player.player_destination \
                     and\
                     not player.inventoryIsOpen:
-                player.playerPos[0] -= Helper.MOVE_SPEED
-                player.playerRect.x -= Helper.MOVE_SPEED
+                player.playerPos[0] -= Player.moveSpeed
+                player.playerRect.x -= Player.moveSpeed
             else:
                 player.direction = ''
                 player.move_direction = ''
@@ -155,6 +178,21 @@ class Player(Entity.Entity):
         if Player.health <= 0:
             # print('You\'s ded bruh')
             Player.die()
+
+    @staticmethod
+    def level_up():
+        Player.playerInstance.level += 1
+        for stat_key in Player.playerInstance.stats.keys():
+            Player.playerInstance.stats[stat_key]['Value'] += random.randint(0, 1)
+        Player.update_stats(Player.playerInstance)
+
+    @staticmethod
+    def gain_exp(amount):
+        while Player.playerInstance.exp + amount >= Player.playerInstance.exp_to_level_up:
+            amount = Player.playerInstance.exp + amount - Player.playerInstance.exp_to_level_up
+            Player.playerInstance.exp = 0
+            Player.playerInstance.exp_to_level_up += int(Helper.EXP_REQUIRED ** 0.95)
+            Player.playerInstance.level_up()
 
     @staticmethod
     def equip(weapon):

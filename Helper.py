@@ -9,6 +9,7 @@ GREEN = (0, 155, 0)
 YELLOW = (155, 155, 0)
 RED = (155, 10, 0)
 WHITE = (200, 200, 200)
+BLACK = (0, 0, 0)
 
 # health bar dimensions
 HEALTH_BAR_SIZE = (137, 8)
@@ -124,4 +125,40 @@ room_encounter_type = (
 
 UPDATETIME, t = pygame.USEREVENT+1, 1000
 
+# dictionary used for stats:
+
+STATS = dict(
+    CON=dict(
+        Name='Constitution',
+        Value=10
+    ),
+    END=dict(
+        Name='Endurance',
+        Value=10
+    ),
+    STR=dict(
+        Name='Strength',
+        Value=10
+    ),
+    DEX=dict(
+        Name='Dexterity',
+        Value=10
+    ),
+    AGL=dict(
+        Name='Agility',
+        Value=10
+    ),
+    LCK=dict(
+        Name='Luck',
+        Value=10
+    ),
+    FTH=dict(
+        Name='Faith',
+        Value=10
+    )
+)
+
+# default exp required for level up
+
+EXP_REQUIRED = 100
 
