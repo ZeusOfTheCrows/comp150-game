@@ -1,20 +1,18 @@
 import pygame
 
+
+# Main display variables
 REFRESH_RATE = 60
 RESOLUTION = (750, 1334)
 DISPLAY_SURFACE = pygame.display.set_mode(RESOLUTION)
 
-# colours
-GREEN = (0, 155, 0)
-YELLOW = (155, 155, 0)
-RED = (155, 10, 0)
-WHITE = (200, 200, 200)
-BLACK = (0, 0, 0)
 
-# health bar dimensions
-HEALTH_BAR_SIZE = (137, 8)
-HEALTH_BAR_THRESHOLDS = [.3, .6, .9]
-HEALTH_BAR_COLOURS = [RED, YELLOW, GREEN, WHITE]
+# Dictionary for fonts
+FONTS = dict(
+    Display='./Resources/Visual/Fonts/inverted.ttf',
+    Sans='./Resources/Visual/Fonts/rounded-pixelfont.ttf'
+            )
+
 
 # Lane positions and whether or not they are occupied
 LANES = dict(
@@ -22,6 +20,43 @@ LANES = dict(
     middle=[(375, 250), False],
     right=[(600, 250), False]
 )
+
+
+# VARIABLES FOR MENU
+
+# Fonts for the menu
+pygame.font.init()
+MENU_SANS = pygame.font.Font(FONTS['Display'], 30)
+SMALL_SANS = pygame.font.Font(FONTS['Display'], 20)
+
+# Colours for the menu screen
+BLACK = (0, 0, 0)
+BRONZE = (124, 91, 51)
+GOLD = (147, 117, 53)
+HIGHLIGHT = (150, 120, 100, 20)
+DARK_GRAY = (69, 69, 69)
+
+# Surfaces for the menu buttons
+TEXTSURF_NEWGAME = MENU_SANS.render('New Game', False, GOLD)
+TEXTSURF_HIGHNEWGAME = MENU_SANS.render('New Game', False, BRONZE)
+
+TEXTSURF_CONTINUE = MENU_SANS.render('Continue', False, GOLD)
+TEXTSURF_HIGHCONTINUE = MENU_SANS.render('Continue', False, BRONZE)
+TEXTSURF_BLACKCONTINUE = MENU_SANS.render('Continue', False, BLACK)
+
+TEXTSURF_SETTINGS = MENU_SANS.render('Settings', False, GOLD)
+TEXTSURF_HIGHSETTINGS = MENU_SANS.render('Settings', False, BRONZE)
+
+TEXTSURF_QUIT = MENU_SANS.render('Quit', False, GOLD)
+TEXTSURF_HIGHQUIT = MENU_SANS.render('Quit', False, BRONZE)
+
+TEXTSURF_SETTINGSEXIT = SMALL_SANS.render('Back', False, BRONZE)
+TEXTSURF_HIGHSETTINGSEXIT = SMALL_SANS.render('Back', False, BLACK)
+
+TEXTSURF_DESPACITO = SMALL_SANS.render('Hello World', False, HIGHLIGHT)
+
+
+# CHARACTER VARIABLES
 
 # distance moved for input to be registered as a swipe
 SWIPE_DISTANCE = 90
@@ -41,6 +76,57 @@ PLAYER_ATTACK_COOLDOWN = 750
 # distance for character move steps
 MOVE_SPEED = 10
 
+
+# default exp required for level up
+EXP_REQUIRED = 100
+
+# Player stats
+STATS = dict(
+    CON=dict(
+        Name='Constitution',
+        Value=10
+    ),
+    END=dict(
+        Name='Endurance',
+        Value=10
+    ),
+    STR=dict(
+        Name='Strength',
+        Value=10
+    ),
+    DEX=dict(
+        Name='Dexterity',
+        Value=10
+    ),
+    AGL=dict(
+        Name='Agility',
+        Value=10
+    ),
+    LCK=dict(
+        Name='Luck',
+        Value=10
+    ),
+    FTH=dict(
+        Name='Faith',
+        Value=10
+    )
+)
+
+
+# DISPLAY VARIABLES
+
+# Health bar colours
+GREEN = (0, 155, 0)
+YELLOW = (155, 155, 0)
+RED = (155, 10, 0)
+WHITE = (200, 200, 200)
+BLACK = (0, 0, 0)
+
+# health bar dimensions
+HEALTH_BAR_SIZE = (137, 8)
+HEALTH_BAR_THRESHOLDS = [.3, .6, .9]
+HEALTH_BAR_COLOURS = [RED, YELLOW, GREEN, WHITE]
+
 # onscreen position of inventory
 INVENTORY_POSITION = (15, 970)
 
@@ -56,6 +142,9 @@ TEXT_DISPLAY_TIME = 1500
 # default font size
 DEFAULT_FONT_SIZE = 24
 
+
+# ENEMY AND ROOM VARIABLES
+
 # Tuples containing elements for naming items, rooms_list, entities etc
 Affinities = ('Chaos', 'Abyss', 'Void', 'Eldritch')
 ELEMENTS = ('Water', 'Air', 'Earth', 'Fire')
@@ -66,6 +155,9 @@ MODIFIERS_BONUS = ('Cursed', 'Blessed')
 QUALITY = ('Broken', 'Chipped', 'Mundane', 'Tempered', 'Pristine')
 WEAPONS = ('Nodachi', 'Katana', 'Tekkan', 'Hachiwari')
 UPGRADES = ('+0', '+1', '+2', '+3', '+4', '+5')
+
+# Event used for time-of-day specific features (called every second)
+UPDATETIME, t = pygame.USEREVENT+1, 1000
 
 TIME_OF_DAY = dict(
     morning=([400, 1000],
@@ -109,7 +201,6 @@ Modifiers_Elemental_Colours = ((28, 58, 89),
 # + Upgrade + (Modifier_Bonus)
 # Example: Chipped Nodachi of Smoulders +2 (Cursed)
 
-# Room variables:
 
 room_encounter_type = (
                        'ascension',
@@ -120,51 +211,3 @@ room_encounter_type = (
                        )
 
 # Custom events
-
-# Event used for time-of-day specific features (called every second)
-
-UPDATETIME, t = pygame.USEREVENT+1, 1000
-
-# dictionary used for stats:
-
-STATS = dict(
-    CON=dict(
-        Name='Constitution',
-        Value=10
-    ),
-    END=dict(
-        Name='Endurance',
-        Value=10
-    ),
-    STR=dict(
-        Name='Strength',
-        Value=10
-    ),
-    DEX=dict(
-        Name='Dexterity',
-        Value=10
-    ),
-    AGL=dict(
-        Name='Agility',
-        Value=10
-    ),
-    LCK=dict(
-        Name='Luck',
-        Value=10
-    ),
-    FTH=dict(
-        Name='Faith',
-        Value=10
-    )
-)
-
-# default exp required for level up
-
-EXP_REQUIRED = 100
-
-# dictionary for fonts
-
-FONTS = dict(
-    Display='./Resources/Visual/Fonts/inverted.ttf',
-    Sans='./Resources/Visual/Fonts/rounded-pixelfont.ttf'
-)
