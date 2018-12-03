@@ -68,7 +68,6 @@ def populate_current_room():
         return False
     for i in range(0, enemy_count):
         Entity.enemy_list.append(Entity.Enemy(Room.current_room))
-    print(str(Entity.enemy_list))
     return True
 
 

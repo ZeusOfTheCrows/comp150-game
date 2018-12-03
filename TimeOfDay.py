@@ -17,7 +17,7 @@ class TimeOfDay:
         """
         =======================================================================
         Function to calculate buff of monsters based on current time of day.
-        
+
         :param current_time: time in YYYY-MM-DD hh:mm:ss.SSSSSS format
         :return: message to be displayed - how strong enemies are.
         =======================================================================
