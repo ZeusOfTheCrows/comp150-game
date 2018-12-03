@@ -133,7 +133,7 @@ class Enemy(Entity):
 
         self.health = self.stats['CON']['Value'] * 10 + 5 * self.level
 
-        self.sprite = ImageFiles.images['Enemy']  # [random.randint(0, len(ImageFiles.images) - 1)]
+        self.sprite = ImageFiles.images['Enemy']
 
         self.chance_to_attack = 10 + 5 * self.stats['DEX']['Value']
 

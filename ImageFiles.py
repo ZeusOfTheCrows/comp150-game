@@ -70,12 +70,14 @@ images['Potion_Body'] = pygame.image.load(
 images['Rooms'] = dict(
             Tutorial=pygame.image.load(
                 './Resources/Visual/Rooms/room.png').convert_alpha()
-                )
+                        )
 
 images['UI'] = dict(
         Inventory_Background=pygame.image.load(
-            './Resources/Visual/UI/inv_background.png').convert_alpha()
-            )
+            './Resources/Visual/UI/inv_background.png').convert_alpha(),
+        GameOverScreen=pygame.image.load(
+            './Resources/Visual/UI/game_over.png').convert_alpha()
+                    )
 
 images['Enemies'] = [
     pygame.image.load(
