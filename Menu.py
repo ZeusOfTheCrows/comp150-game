@@ -4,6 +4,7 @@ import Helper
 import MenuHelper
 import pickle
 from pygame.locals import *
+import ImageFiles
 
 pygame.init()
 pygame.font.init()
@@ -25,7 +26,8 @@ buttons = dict(
     buttonSettings=pygame.Rect(50, 634, 300, 150),
     buttonQuit=pygame.Rect(400, 634, 300, 150),
     settingsBackground=pygame.Rect(25, 375, 700, 600),
-    settingsExit=pygame.Rect(50, 900, 100, 50)
+    settingsExit=pygame.Rect(50, 900, 100, 50),
+    gameOverExit=pygame.Rect(50, 900, 100, 50)
     )
 
 
@@ -106,11 +108,6 @@ def check_buttons(click_pos, save_file_exists):
 
 
 def check_settings_buttons(click_pos):
-    """
-    todo: docstring
-    :param click_pos:
-    :return:
-    """
 
     if buttons['settingsExit'].collidepoint(click_pos):
         print("Button clicked: Exit Settings")
@@ -246,5 +243,78 @@ def settings_menu_update():
                 return check_settings_buttons(click_pos)
 
         highlight_settings_buttons(mouse_x, mouse_y)
+        pygame.display.update()
+        FPS_CLOCK.tick(FPS)
+
+
+def draw_game_over_screen():
+    """
+    ===========================================================================
+    Draws the game over screen and main menu button.
+    ===========================================================================
+    """
+
+    Helper.DISPLAY_SURFACE.blit(
+        ImageFiles.images['UI']['GameOverScreen'], (0, 0)
+                                )
+
+    pygame.draw.rect(DISPLAY_SURFACE, GOLD, buttons['gameOverExit'])
+    DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_SETTINGSEXIT, (80, 910))
+
+
+def highlight_menu_button(mouse_x, mouse_y):
+    """
+    ===========================================================================
+    Draws a highlight over the button on the game over screen on mouse-over.
+    :param mouse_x: current mouse horizontal position (not click)
+    :param mouse_y: current mouse vertical position (not click)
+    ===========================================================================
+    """
+
+    if buttons['settingsExit'].collidepoint(mouse_x, mouse_y):
+        pygame.draw.rect(DISPLAY_SURFACE, HIGHLIGHT, buttons['settingsExit'])
+        DISPLAY_SURFACE.blit(MenuHelper.TEXTSURF_HIGHSETTINGSEXIT, (80, 910))
+
+
+def check_game_over_button(click_pos):
+
+    if buttons['settingsExit'].collidepoint(click_pos):
+        return 'Main_Menu'
+
+    return 'Death_Screen'
+
+
+def game_over_screen_update():
+    """
+    ===========================================================================
+    Updates the game over screen, calls renderer function and
+                                      checks for button press.
+    ===========================================================================
+    """
+
+    (mouse_x, mouse_y) = (0, 0)
+    while True:
+        DISPLAY_SURFACE.fill(BLACK)
+        draw_game_over_screen()
+
+        for event in pygame.event.get():
+            # stores most recent mouse movement in two variables
+            if event.type == MOUSEMOTION:
+                mouse_x, mouse_y = event.pos
+
+            elif event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    return 'Main_Menu'
+
+            # check if a button was clicked on mouse click
+            elif event.type == MOUSEBUTTONUP:
+                click_pos = pygame.mouse.get_pos()
+                return check_settings_buttons(click_pos)
+
+        highlight_menu_button(mouse_x, mouse_y)
         pygame.display.update()
         FPS_CLOCK.tick(FPS)

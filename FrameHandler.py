@@ -121,7 +121,10 @@ def event_handler(game_state, player):
     global room_is_populated
     player_action = 'idle'
 
-    if Entity.Enemy.numberOfOnscreenEnemies == 0 and game_is_saved is False:
+    if Player.Player.is_dead:
+        return 'none', 'Death_Screen'
+
+    if Entity.Enemy.numberOfOnscreenEnemies == 0 and not game_is_saved:
         game_is_saved = save_game(player)
 
     for event in pygame.event.get():
@@ -137,7 +140,9 @@ def event_handler(game_state, player):
             elif event.key == K_m:
                 print_data()
             elif event.key == K_a:
-                Player.Player.Inventory.add_item(Item.Weapon(add_to_backpack=True))
+                Player.Player.Inventory.add_item(
+                                            Item.Weapon(add_to_backpack=True)
+                                                )
                 Player.Player.Backpack.add_item(Player.Player.Inventory)
         elif event.type == MOUSEBUTTONDOWN:
             player_action = Inputs.read_mouse_down(event.pos)
@@ -194,10 +199,11 @@ def update(player, player_action):
             projectile.update()
 
 
-def renderer():  # to be called every frame to render every image in a list
+def renderer():
     """
     ===========================================================================
-    Blits everything to the screen that needs to be. Called every frame.
+    Blits everything to the screen that needs to be.
+        Called every frame to render every image in a list.
     ===========================================================================
     """
 
@@ -324,11 +330,11 @@ def renderer():  # to be called every frame to render every image in a list
             else slot - Player.Player.Backpack.size / 2
 
         position = [
-            Helper.INVENTORY_POSITION[0] + 350 + (item_surf.get_width() + 20) *
-            column,
-            Helper.INVENTORY_POSITION[1] + 100 + (item_surf.get_height() + 20) *
-            row + vertical_offset
-        ]
+            Helper.INVENTORY_POSITION[0] + 350 +
+            (item_surf.get_width() + 20) * column,
+            Helper.INVENTORY_POSITION[1] + 100 +
+            (item_surf.get_height() + 20) * row + vertical_offset
+                    ]
 
         Helper.DISPLAY_SURFACE.blit(item_surf, position)
 

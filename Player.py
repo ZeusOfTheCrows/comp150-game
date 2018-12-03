@@ -40,6 +40,7 @@ class Player(Entity.Entity):
     moveSpeed = Helper.MOVE_SPEED
     health = 1
     max_health = 1
+    is_dead = False
     inventoryIsOpen = False
     hasWeaponEquipped = False
     weaponEquipped = None
@@ -190,15 +191,19 @@ class Player(Entity.Entity):
     def level_up():
         Player.playerInstance.level += 1
         for stat_key in Player.playerInstance.stats.keys():
-            Player.playerInstance.stats[stat_key]['Value'] += random.randint(0, 1)
+            Player.playerInstance.stats[stat_key]['Value'] += \
+                                            random.randint(0, 1)
         Player.update_stats(Player.playerInstance)
 
     @staticmethod
     def gain_exp(amount):
-        while Player.playerInstance.exp + amount >= Player.playerInstance.exp_to_level_up:
-            amount = Player.playerInstance.exp + amount - Player.playerInstance.exp_to_level_up
+        while Player.playerInstance.exp + amount >= \
+                Player.playerInstance.exp_to_level_up:
+            amount = Player.playerInstance.exp + amount - \
+                     Player.playerInstance.exp_to_level_up
             Player.playerInstance.exp = 0
-            Player.playerInstance.exp_to_level_up += int(Helper.EXP_REQUIRED ** 0.95)
+            Player.playerInstance.exp_to_level_up += \
+                int(Helper.EXP_REQUIRED ** 0.95)
             Player.playerInstance.level_up()
 
     @staticmethod
@@ -207,4 +212,4 @@ class Player(Entity.Entity):
 
     @staticmethod
     def die():
-        pass
+        Player.is_dead = True

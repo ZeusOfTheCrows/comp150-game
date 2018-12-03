@@ -52,6 +52,9 @@ while running:
         # display handling section
         FrameHandler.renderer()
 
+    if game_state == 'Death_Screen':
+        game_state = Menu.game_over_screen_update()
+
     if game_state == 'Quit':
         running = False
 
