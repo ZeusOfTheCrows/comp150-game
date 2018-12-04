@@ -64,7 +64,6 @@ def draw_settings_menu():
     """
 
     pygame.draw.rect(DISPLAY_SURFACE, BRONZE, buttons['settingsBackground'])
-    DISPLAY_SURFACE.blit(Helper.TEXTSURF_DESPACITO, (625, 940))
 
     pygame.draw.rect(DISPLAY_SURFACE, GOLD, buttons['settingsExit'])
     DISPLAY_SURFACE.blit(Helper.TEXTSURF_SETTINGSEXIT, (80, 910))
@@ -81,21 +80,17 @@ def check_buttons(click_pos, save_file_exists):
     ===========================================================================
     """
     if buttons['buttonQuit'].collidepoint(click_pos):
-        print("Button clicked: Quit")
         return 'Quit', None
 
     elif buttons['buttonNewGame'].collidepoint(click_pos):
-        print("Button clicked: New Game")
         return 'New_Game', None
 
     elif buttons['buttonContinue'].collidepoint(click_pos):
         if save_file_exists:
-            print("Button clicked: Continue")
-            # return 'Continue'
+            pass
         else:
-            print("Button clicked: Continue. However, save file not found.")
+            pass
     elif buttons['buttonSettings'].collidepoint(click_pos):
-        print("Button clicked: Settings")
         return 'Settings', None
 
     return 'Main_Menu', None
@@ -104,7 +99,6 @@ def check_buttons(click_pos, save_file_exists):
 def check_settings_buttons(click_pos):
 
     if buttons['settingsExit'].collidepoint(click_pos):
-        print("Button clicked: Exit Settings")
         return 'Main_Menu'
 
     return 'Settings'
@@ -189,7 +183,6 @@ def menu_update():
 
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    print('Key pressed: Escape - Closing game...')
                     pygame.quit()
                     sys.exit()
 
@@ -227,7 +220,6 @@ def settings_menu_update():
 
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    print('Key pressed: Escape - Exiting menu...')
                     return 'Main_Menu'
 
             # check if a button was clicked on mouse click
