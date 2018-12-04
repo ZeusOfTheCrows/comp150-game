@@ -139,11 +139,6 @@ def event_handler(game_state, player):
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 game_state = 'Main_Menu'
-            elif event.key == K_a:
-                Player.Player.Inventory.add_item(
-                                            Item.Weapon(add_to_backpack=True)
-                                                )
-                Player.Player.Backpack.add_item(Player.Player.Inventory)
         elif event.type == MOUSEBUTTONDOWN:
             player_action = Inputs.read_mouse_down(event.pos)
         elif event.type == MOUSEBUTTONUP:
@@ -156,6 +151,14 @@ def event_handler(game_state, player):
             Player.Player.isLeavingRoom = True
             Room.advance_room()
             clean_room()
+
+            # random roll for item
+
+            if random.random > 0.75:
+                Player.Player.Inventory.add_item(
+                                            Item.Weapon(add_to_backpack=True)
+                                                )
+                Player.Player.Backpack.add_item(Player.Player.Inventory)
 
     if Room.current_room.position[1] >= Room.current_room_x\
             and Player.Player.isLeavingRoom:

@@ -91,8 +91,9 @@ class Player(Entity.Entity):
         Player.attackCooldown -= int(player.stats['DEX']['Value'] ** 1.01)
         Player.moveSpeed += int(player.stats['AGL']['Value'] ** 0.001)
         Player.baseDamage += int(player.stats['STR']['Value'] ** 0.5)
-        del Player.healthBar
-        Player.healthBar = Entity.HealthBar(Player)
+        Player.healthBar.max_health = Player.max_health
+        Player.healthBar.health = Player.health
+        Player.healthBar.colour = Helper.WHITE
 
     @staticmethod
     def player_action(player, action):
