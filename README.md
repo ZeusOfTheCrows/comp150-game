@@ -21,11 +21,12 @@
 * Incremental difficulty;
 * Themed music;
 * Potential for procedural room generation;
-* Mobile-oriented control scheme.
+* Mobile-oriented control scheme;
+* Real-world time dependant monster strength.
 
 ## Notes
 
-* The game saves, but loading save file is not yet implemented.
-* New rooms can easily be added in the game in their respective folders
+* The game saves, but loading save file is not yet implemented;
+* New rooms can easily be added in the game in their respective folders;
 * Whenever the game is lost, pressing "New Game" in the Main Menu will start a new game.
 
