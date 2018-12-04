@@ -60,7 +60,8 @@ class Player(Entity.Entity):
                             ]
         Player.playerRect.x = Player.playerPos[0]
         Player.playerRect.y = Player.playerPos[1]
-        print(Player.playerInstances)
+        Player.moveSpeed = Helper.MOVE_SPEED
+        Player.moveDistance = Helper.MOVE_DISTANCE
         if Player.playerInstances == 0:
             Player.playerInstances += 1
         else:
@@ -209,9 +210,6 @@ class Player(Entity.Entity):
 
     @staticmethod
     def gain_exp(amount):
-        print("PLAYER GAINED", amount, "EXP")
-        print("PLAYER CURRENTLY HAS", Player.playerInstance.exp, "XP")
-        print("PLAYER IS LEVEL", Player.playerInstance.level)
         while Player.playerInstance.exp + amount >= \
                 Player.playerInstance.exp_to_level_up:
             amount = Player.playerInstance.exp + amount - \
@@ -221,14 +219,10 @@ class Player(Entity.Entity):
                 int(Helper.EXP_REQUIRED ** 0.95)
             Player.playerInstance.level_up()
         Player.playerInstance.exp += amount
-        print("PLAYER NOW HAS", Player.playerInstance.exp, "XP")
-        print("PLAYER IS NOW LEVEL", Player.playerInstance.level)
-
     @staticmethod
     def equip(weapon):
         Inventory.Backpack.switch_item(weapon, Player.weaponEquipped)
 
     @staticmethod
     def die():
-        print(Player.playerInstances)
         Player.is_dead = True

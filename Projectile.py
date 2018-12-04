@@ -69,9 +69,16 @@ class PlayerProjectile:
 
     @staticmethod
     def grant_exp(amount):
+        """
+        Gain amount of exp points.
+        :param amount: amount of exp to gain
+        """
         Player.Player.gain_exp(amount)
 
     def update(self):
+        """
+        Update position of player.
+        """
 
         collision_with_enemy = False
 

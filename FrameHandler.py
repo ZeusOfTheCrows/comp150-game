@@ -71,28 +71,6 @@ def populate_current_room():
     return True
 
 
-def print_data():
-    """
-    ===========================================================================
-    Debug function, prints useful debug info to the terminal.
-    ===========================================================================
-    """
-    if Room.next_room:
-        print('Next room position is', str(Room.next_room.position))
-    if Room.current_room:
-        print('Current room position is', str(Room.current_room.position))
-    if Room.prev_room:
-        print('Previous room position is', str(Room.prev_room.position))
-    print('Room positions are', str(Room.next_room_x),
-          str(Room.current_room_x),
-          str(Room.prev_room_x))
-    print('Movement step is', str(Room.room_move_speed))
-
-    print('Player Backpack contains:')
-    for item in Player.Player.Backpack.items:
-        print(item.name)
-
-
 def clean_room():
     """
     ===========================================================================
@@ -129,7 +107,7 @@ def new_game():
     Helper.LANES['middle'][1] = False
     Helper.LANES['right'][1] = False
 
-    yea_boi = populate_current_room()
+    populate_current_room()
 
 
 def event_handler(game_state, player):
@@ -161,8 +139,6 @@ def event_handler(game_state, player):
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 game_state = 'Main_Menu'
-            elif event.key == K_m:
-                print_data()
             elif event.key == K_a:
                 Player.Player.Inventory.add_item(
                                             Item.Weapon(add_to_backpack=True)
@@ -249,7 +225,7 @@ def renderer():
                                 )
 
     for bar in Entity.health_bars:
-        bar_background = pygame.Surface((bar.size[0], bar.size[1]))
+        bar_background = pygame.Surface((bar.size[0] + 4, bar.size[1] + 4))
         bar_background.fill((0, 0, 0))
         bar_surface = pygame.Surface((bar.size[0] *
                                       (bar.health / bar.max_health),
@@ -257,7 +233,8 @@ def renderer():
                                       ))
 
         bar_surface.fill(bar.colour)
-        Helper.DISPLAY_SURFACE.blit(bar_background, (bar.pos[0], bar.pos[1]))
+        Helper.DISPLAY_SURFACE.blit(bar_background, (bar.pos[0] - 2,
+                                                     bar.pos[1] - 2))
         Helper.DISPLAY_SURFACE.blit(bar_surface, (bar.pos[0], bar.pos[1]))
 
     for projectile in Projectile.attackSprites:

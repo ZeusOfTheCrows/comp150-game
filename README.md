@@ -3,10 +3,19 @@
 # Sekai Saviour
 A desktop game made collaboratively using Python and PyGame.
 
-Part (A) of COMP120 Assignment 1: Tinkering Graphics - Contracts
-We have chosen four contracts to split between the four of us, but this does not exclude one another from asking each other for assistance, teamwork is gold after all.
+## Instructions
 
-Cyrus will be undertaking Contract #1 - Dungeon Tile Generator.
-Adrian will be undertaking Contract #3 - Dungeon Entity Generator, unless he is unavailable or wishes to change contract.
-Paul will be undertaking Contract #4 - Dungeon Entity Reskinning.
-Jakob will be undertaking Contract #5 - Colour Blindness UI Analysis Tool.
+Please run Main.py to play the game
+
+Controls follow:
+
+    Swipe left and right to change lanes accordingly;
+    Swipe up or down to open or close inventory;
+    Tap to attack.
+
+## Notes
+
+The game saves, but loading save file is not yet implemented.
+
+Whenever the game is lost, pressing "New Game" in the Main Menu will start a new game.
+

@@ -31,6 +31,9 @@ game_is_saved = False
 first_room = Room()
 second_room = Room()
 
+pygame.mixer.init()
+pygame.mixer_music.load('./Resources/Audio/Sounds/main_theme.wav')
+pygame.mixer_music.play(-1)
 
 while running:
 

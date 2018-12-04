@@ -50,7 +50,7 @@ class HealthBar:
             else self.parent.playerPos[0]
         self.pos[1] = self.parent.pos[1] + int(self.parent.rect.height) \
             if type(self.parent) == Enemy \
-            else self.parent.playerPos[1]
+            else self.parent.playerPos[1] - 12
         if self.parent.health < self.max_health:
             self.colour_update()
 
