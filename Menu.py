@@ -169,8 +169,7 @@ def highlight_settings_buttons(mouse_x, mouse_y):
 def menu_update():
     """
     ===========================================================================
-    todo: fill this in. @joycourier
-        Also, why is there a while loop outside of the main loop?
+    Update menu components and colours.
     ===========================================================================
     """
 
@@ -208,8 +207,7 @@ def menu_update():
 def settings_menu_update():
     """
     ===========================================================================
-    todo: fill this in. @joycourier
-        Also, why is there a while loop outside of the main loop?
+    Updates settings menu components and colours.
     ===========================================================================
     """
 

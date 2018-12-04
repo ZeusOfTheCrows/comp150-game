@@ -60,8 +60,6 @@ def populate_current_room():
     ===========================================================================
     """
 
-    # todo: remove debug code
-    display_messages.append('Populating current room...')
     if Room.current_room.is_populated is False:
         enemy_count = random.randint(1, 3)
     else:
@@ -155,6 +153,7 @@ def event_handler(game_state, player):
             # random roll for item
 
             if random.random > 0.75:
+                display_messages.append('Received a weapon!')
                 Player.Player.Inventory.add_item(
                                             Item.Weapon(add_to_backpack=True)
                                                 )

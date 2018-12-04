@@ -80,7 +80,7 @@ class Room:
         Room.prev_room.position[1] -= Room.room_move_speed
         Room.current_room = Room.next_room
         Room.current_room.position[1] -= Room.room_move_speed
-        Room.next_room = Room()     # TODO: initialise here or outside?
+        Room.next_room = Room()
 
     @staticmethod
     def move_room():

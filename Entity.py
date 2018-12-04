@@ -106,7 +106,6 @@ class Enemy(Entity):
     Their stats increase along with the room they are in
     ---------------------------------------------------------------------------
     """
-    # todo: fill this in ^
 
     numberOfOnscreenEnemies = 0
 
@@ -227,14 +226,3 @@ class Enemy(Entity):
         else:
             del self
 
-
-class EnemyBoss(Enemy):
-    """
-    ---------------------------------------------------------------------------
-    Boss enemy class. Class of enemy bosses.
-    ---------------------------------------------------------------------------
-    """
-    # todo: fill this in also ^
-
-    def __init__(self):
-        Enemy.__init__(self)
