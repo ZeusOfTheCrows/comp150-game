@@ -23,12 +23,14 @@ class Player(Entity.Entity):
     displaySurface = Helper.DISPLAY_SURFACE
     playerSurf = ImageFiles.images['Player']
     playerRect = playerSurf.get_rect()
-    playerPos = [Helper.RESOLUTION[0] * 0.5 - playerSurf.get_width() * 0.5,
-                 Helper.RESOLUTION[1] * 0.2 - playerSurf.get_height() * 0.5
+    playerPos = [Helper.RESOLUTION[0] * 0.5
+                 - playerSurf.get_width() * 0.5,
+                 Helper.RESOLUTION[1] * 0.2
+                 - playerSurf.get_height() * 0.5
                  + 600
                  ]
-    playerRect.x = playerPos[0]
-    playerRect.y = playerPos[1]
+    playerRect.x = 0
+    playerRect.y = 0
     moveDistance = Helper.MOVE_DISTANCE
     inventoryPosition = Helper.INVENTORY_POSITION
     projectileSpeed = Helper.PROJECTILE_SPEED
@@ -49,6 +51,16 @@ class Player(Entity.Entity):
     player_destination = 0
 
     def __init__(self):
+
+        Player.playerPos = [Helper.RESOLUTION[0] * 0.5
+                            - Player.playerSurf.get_width() * 0.5,
+                            Helper.RESOLUTION[1] * 0.2
+                            - Player.playerSurf.get_height() * 0.5
+                            + 600
+                            ]
+        Player.playerRect.x = Player.playerPos[0]
+        Player.playerRect.y = Player.playerPos[1]
+        print(Player.playerInstances)
         if Player.playerInstances == 0:
             Player.playerInstances += 1
         else:
@@ -197,6 +209,9 @@ class Player(Entity.Entity):
 
     @staticmethod
     def gain_exp(amount):
+        print("PLAYER GAINED", amount, "EXP")
+        print("PLAYER CURRENTLY HAS", Player.playerInstance.exp, "XP")
+        print("PLAYER IS LEVEL", Player.playerInstance.level)
         while Player.playerInstance.exp + amount >= \
                 Player.playerInstance.exp_to_level_up:
             amount = Player.playerInstance.exp + amount - \
@@ -205,6 +220,9 @@ class Player(Entity.Entity):
             Player.playerInstance.exp_to_level_up += \
                 int(Helper.EXP_REQUIRED ** 0.95)
             Player.playerInstance.level_up()
+        Player.playerInstance.exp += amount
+        print("PLAYER NOW HAS", Player.playerInstance.exp, "XP")
+        print("PLAYER IS NOW LEVEL", Player.playerInstance.level)
 
     @staticmethod
     def equip(weapon):
@@ -212,4 +230,5 @@ class Player(Entity.Entity):
 
     @staticmethod
     def die():
+        print(Player.playerInstances)
         Player.is_dead = True

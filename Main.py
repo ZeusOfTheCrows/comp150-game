@@ -15,6 +15,9 @@ DISPLAY_SURFACE = Helper.DISPLAY_SURFACE
 FPS_CLOCK = pygame.time.Clock()
 pygame.display.set_caption('Sekai Saviour')
 DISPLAY_SURFACE.fill((79, 51, 44))
+
+player_has_died = False
+
 player = Player.Player()
 MapGenerator.run_separator()
 
@@ -39,6 +42,16 @@ while running:
 
     while game_state == 'New_Game':
         # event handling section
+
+        if Player.Player.is_dead:
+
+            Player.Player.is_dead = False
+
+            is_paused = False
+            game_is_saved = False
+
+            FrameHandler.new_game()
+
         if loaded_data:
             aux_player = loaded_data
             print(aux_player.health)
@@ -51,6 +64,11 @@ while running:
 
         # display handling section
         FrameHandler.renderer()
+
+        if Player.Player.is_dead:
+            prev_game_state = "New_Game"
+            game_state = "Death_Screen"
+            break
 
     if game_state == 'Death_Screen':
         game_state = Menu.game_over_screen_update()

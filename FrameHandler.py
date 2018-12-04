@@ -104,6 +104,34 @@ def clean_room():
         enemy.__del__()
 
 
+def new_game():
+    Entity.health_bars.clear()
+    Entity.enemy_list.clear()
+    Projectile.attackSprites.clear()
+    Player.Player.is_dead = False
+    Player.Player.playerInstances = 0
+    Player.Player.playerInstance = Player.Player()
+    Player.Player.currentLane = 0
+    global current_player_level
+    current_player_level = 1
+
+    Room.rooms_list.clear()
+
+    Room.reset_room()
+
+    first_room = Room()
+    second_room = Room()
+
+    Room.current_room = first_room
+    Room.next_room = second_room
+
+    Helper.LANES['left'][1] = False
+    Helper.LANES['middle'][1] = False
+    Helper.LANES['right'][1] = False
+
+    yea_boi = populate_current_room()
+
+
 def event_handler(game_state, player):
     """
     ===========================================================================
@@ -119,9 +147,6 @@ def event_handler(game_state, player):
     global game_is_saved
     global room_is_populated
     player_action = 'idle'
-
-    if Player.Player.is_dead:
-        return 'none', 'Death_Screen'
 
     if Entity.Enemy.numberOfOnscreenEnemies == 0 and not game_is_saved:
         game_is_saved = save_game(player)
@@ -283,9 +308,9 @@ def renderer():
     stats = [
         str('Level : ' + str(Player.Player.playerInstance.level)),
         str('HP : '
-            + str(Player.Player.playerInstance.max_health)
+            + str(Player.Player.playerInstance.health)
             + '/'
-            + str(Player.Player.playerInstance.health)),
+            + str(Player.Player.playerInstance.max_health)),
         str('XP : '
             + str(Player.Player.playerInstance.exp)
             + '/'

@@ -119,7 +119,7 @@ class Enemy(Entity):
         self.on_battle = True
         self.room = room
 
-        self.level = random.randint(max(0, room.index - 5), room.index)
+        self.level = random.randint(max(1, room.index - 5), room.index + 1)
 
         for stat_key in self.stats.keys():
             self.stats[stat_key]['Value'] += random.randint(

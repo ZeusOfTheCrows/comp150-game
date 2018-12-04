@@ -10,7 +10,7 @@ class Room:
     ---------------------------------------------------------------------------
     """
     rooms_index = 0
-    rooms_list = []     # should usually contain 3 rooms tops
+    rooms_list = []     # should usually contain 3 rooms
 
     prev_room = None
     current_room = None
@@ -22,6 +22,15 @@ class Room:
     next_room_x = -Helper.RESOLUTION[1]
     current_room_x = 0
     prev_room_x = Helper.RESOLUTION[1]
+
+    @staticmethod
+    def reset_room():
+        Room.rooms_index = 0
+        Room.rooms_list = []  # should usually contain 3 rooms tops
+
+        Room.prev_room = None
+        Room.current_room = None
+        Room.next_room = None
 
     def __init__(self):
         self.index = Room.rooms_index
