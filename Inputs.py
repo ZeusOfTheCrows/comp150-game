@@ -1,7 +1,5 @@
-import Player
 import Helper
 import pygame
-from pygame.locals import *
 
 pygame.init()
 
@@ -65,7 +63,7 @@ def read_mouse_up(mouse_position):
             and \
             abs(input_distance_v) < swipeDistance:
         input_command = 'attack'
-    else:  # this should never happen, it's only in here as a failsafe.
+    else:  # this should never happen, it's only in here as a fail safe.
         input_command = 'none'
 
     return input_command

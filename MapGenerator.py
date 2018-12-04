@@ -43,12 +43,12 @@ def empty_tile_removal(path):
 
 
 # Separator for tiles
-def separate_tiles(size_x, size_y, tilemap, path, index):
+def separate_tiles(size_x, size_y, tilemap_to_separate, path, index):
     for x in range(0, size_x):
         for y in range(0, size_y):
 
             tile_area = pygame.Rect(y * 25, x * 25, 24, 24)
-            tile = tilemap.subsurface(tile_area)
+            tile = tilemap_to_separate.subsurface(tile_area)
             pygame.image.save(tile, path + 'tile' + str(index) + '.png')
             index += 1
 
@@ -71,7 +71,8 @@ finished = False
 
 
 def run_separator():
-    separate_tiles(tilemap_size_x, tilemap_size_y, tilemap, tile_path, tile_index)
+    separate_tiles(tilemap_size_x, tilemap_size_y,
+                   tilemap, tile_path, tile_index)
 
 
 def run_remover():

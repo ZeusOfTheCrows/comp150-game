@@ -19,16 +19,20 @@ class Player(Entity.Entity):
     move_direction = ''
     isLeavingRoom = False
 
+    # initialize most variables
+
     currentLane = 0  # 0: Middle, -1: Left, 1: Right
     displaySurface = Helper.DISPLAY_SURFACE
     playerSurf = ImageFiles.images['Player']
     playerRect = playerSurf.get_rect()
-    playerPos = [Helper.RESOLUTION[0] * 0.5 - playerSurf.get_width() * 0.5,
-                 Helper.RESOLUTION[1] * 0.2 - playerSurf.get_height() * 0.5
+    playerPos = [Helper.RESOLUTION[0] * 0.5
+                 - playerSurf.get_width() * 0.5,
+                 Helper.RESOLUTION[1] * 0.2
+                 - playerSurf.get_height() * 0.5
                  + 600
                  ]
-    playerRect.x = playerPos[0]
-    playerRect.y = playerPos[1]
+    playerRect.x = 0
+    playerRect.y = 0
     moveDistance = Helper.MOVE_DISTANCE
     inventoryPosition = Helper.INVENTORY_POSITION
     projectileSpeed = Helper.PROJECTILE_SPEED
@@ -46,9 +50,21 @@ class Player(Entity.Entity):
     weaponEquipped = None
     Inventory = None
     Backpack = None
+    healthBar = None
     player_destination = 0
 
     def __init__(self):
+
+        Player.playerPos = [Helper.RESOLUTION[0] * 0.5
+                            - Player.playerSurf.get_width() * 0.5,
+                            Helper.RESOLUTION[1] * 0.2
+                            - Player.playerSurf.get_height() * 0.5
+                            + 600
+                            ]
+        Player.playerRect.x = Player.playerPos[0]
+        Player.playerRect.y = Player.playerPos[1]
+        Player.moveSpeed = Helper.MOVE_SPEED
+        Player.moveDistance = Helper.MOVE_DISTANCE
         if Player.playerInstances == 0:
             Player.playerInstances += 1
         else:
@@ -72,17 +88,31 @@ class Player(Entity.Entity):
 
     @staticmethod
     def update_stats(player):
+        """
+        Update stats by certain amount
+        :param player: player instance
+        """
+
         Player.max_health += int(player.stats['CON']['Value'] ** 1.99)
         Player.health = Player.max_health
         Player.projectileSpeed += int(player.stats['AGL']['Value'] ** 0.01)
         Player.attackCooldown -= int(player.stats['DEX']['Value'] ** 1.01)
         Player.moveSpeed += int(player.stats['AGL']['Value'] ** 0.001)
         Player.baseDamage += int(player.stats['STR']['Value'] ** 0.5)
-        del Player.healthBar
-        Player.healthBar = Entity.HealthBar(Player)
+        Player.healthBar.max_health = Player.max_health
+        Player.healthBar.health = Player.health
+        Player.healthBar.colour = Helper.WHITE
 
     @staticmethod
     def player_action(player, action):
+        """
+        =======================================================================
+        Parses player action and fires off appropriate function.
+        :param player: instance of the player
+        :param action: action to be performed
+        =======================================================================
+        """
+
         if not Player.isLeavingRoom:
             if 'move' in action and not player.inventoryIsOpen:
                 Player.player_move(action, player)
@@ -102,6 +132,13 @@ class Player(Entity.Entity):
 
     @staticmethod
     def leave_room(player):
+        """
+        =======================================================================
+        Function for initiating departure from room
+        :param player: player instance
+        =======================================================================
+        """
+
         if player.currentLane == -1:
             direction = 'move_right'
         elif player.currentLane == 1:
@@ -123,11 +160,19 @@ class Player(Entity.Entity):
 
     @staticmethod
     def attack():
+        """
+        Generate projectile.
+        :return:
+        """
         Player.lastAttack = pygame.time.get_ticks()
         Projectile.PlayerProjectile(Player.currentLane)
 
     @staticmethod
     def inventory_update(action):
+        """
+        Update inventory states and actions.
+        :param action: action as a string i.e. 'switch_inv'
+        """
         if 'switch_inv' == action:
             Player.inventoryIsOpen = not Player.inventoryIsOpen
         elif 'open_inv' == action:
@@ -136,7 +181,7 @@ class Player(Entity.Entity):
             Player.inventoryIsOpen = False
 
     @staticmethod
-    def player_move(direction, player):  # needs four directions
+    def player_move(direction, player):
         """
         Used for moving player upon swipe input, in future
         will be used for moving from room to room also.
@@ -183,12 +228,19 @@ class Player(Entity.Entity):
 
     @staticmethod
     def is_hit(damage):
+        """
+        Subtract damage from the player's HP.
+        :param damage: amount to subtract
+        """
         Player.health -= damage
         if Player.health <= 0:
             Player.die()
 
     @staticmethod
     def level_up():
+        """
+        Level up player.
+        """
         Player.playerInstance.level += 1
         for stat_key in Player.playerInstance.stats.keys():
             Player.playerInstance.stats[stat_key]['Value'] += \
@@ -197,6 +249,10 @@ class Player(Entity.Entity):
 
     @staticmethod
     def gain_exp(amount):
+        """
+        Increase player's experience points by amount and possibly level up.
+        :param amount: amount of experience points
+        """
         while Player.playerInstance.exp + amount >= \
                 Player.playerInstance.exp_to_level_up:
             amount = Player.playerInstance.exp + amount - \
@@ -205,11 +261,19 @@ class Player(Entity.Entity):
             Player.playerInstance.exp_to_level_up += \
                 int(Helper.EXP_REQUIRED ** 0.95)
             Player.playerInstance.level_up()
+        Player.playerInstance.exp += amount
 
     @staticmethod
     def equip(weapon):
+        """
+        Equip weapon.
+        :param weapon: weapon to equip.
+        """
         Inventory.Backpack.switch_item(weapon, Player.weaponEquipped)
 
     @staticmethod
     def die():
+        """
+        Prepare player for removal.
+        """
         Player.is_dead = True

@@ -20,7 +20,10 @@ health_bars = []
 class HealthBar:
 
     def __init__(self, entity):
-        self.size = Helper.HEALTH_BAR_SIZE
+        self.size = [entity.sprite.get_width()
+                     if type(entity) == Enemy
+                     else entity.playerSurf.get_width(),
+                     Helper.HEALTH_BAR_SIZE[1]]
         self.max_health = entity.health
         self.health = self.max_health
         self.parent = entity
@@ -50,7 +53,7 @@ class HealthBar:
             else self.parent.playerPos[0]
         self.pos[1] = self.parent.pos[1] + int(self.parent.rect.height) \
             if type(self.parent) == Enemy \
-            else self.parent.playerPos[1]
+            else self.parent.playerPos[1] - 10
         if self.parent.health < self.max_health:
             self.colour_update()
 
@@ -106,7 +109,6 @@ class Enemy(Entity):
     Their stats increase along with the room they are in
     ---------------------------------------------------------------------------
     """
-    # todo: fill this in ^
 
     numberOfOnscreenEnemies = 0
 
@@ -119,7 +121,7 @@ class Enemy(Entity):
         self.on_battle = True
         self.room = room
 
-        self.level = random.randint(max(0, room.index - 5), room.index)
+        self.level = random.randint(max(1, room.index - 5), room.index + 1)
 
         for stat_key in self.stats.keys():
             self.stats[stat_key]['Value'] += random.randint(
@@ -226,15 +228,3 @@ class Enemy(Entity):
             enemy_list.remove(self)
         else:
             del self
-
-
-class EnemyBoss(Enemy):
-    """
-    ---------------------------------------------------------------------------
-    Boss enemy class. Class of enemy bosses.
-    ---------------------------------------------------------------------------
-    """
-    # todo: fill this in also ^
-
-    def __init__(self):
-        Enemy.__init__(self)

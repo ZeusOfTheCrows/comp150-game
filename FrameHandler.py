@@ -60,8 +60,6 @@ def populate_current_room():
     ===========================================================================
     """
 
-    # todo: remove debug code
-    display_messages.append('Populating current room...')
     if Room.current_room.is_populated is False:
         enemy_count = random.randint(1, 3)
     else:
@@ -69,28 +67,6 @@ def populate_current_room():
     for i in range(0, enemy_count):
         Entity.enemy_list.append(Entity.Enemy(Room.current_room))
     return True
-
-
-def print_data():
-    """
-    ===========================================================================
-    Debug function, prints useful debug info to the terminal.
-    ===========================================================================
-    """
-    if Room.next_room:
-        print('Next room position is', str(Room.next_room.position))
-    if Room.current_room:
-        print('Current room position is', str(Room.current_room.position))
-    if Room.prev_room:
-        print('Previous room position is', str(Room.prev_room.position))
-    print('Room positions are', str(Room.next_room_x),
-          str(Room.current_room_x),
-          str(Room.prev_room_x))
-    print('Movement step is', str(Room.room_move_speed))
-
-    print('Player Backpack contains:')
-    for item in Player.Player.Backpack.items:
-        print(item.name)
 
 
 def clean_room():
@@ -102,6 +78,39 @@ def clean_room():
     Projectile.attackSprites.clear()
     for enemy in Entity.enemy_list:
         enemy.__del__()
+
+
+def new_game():
+    """
+    ===========================================================================
+    Resets the state of the game.
+    ===========================================================================
+    """
+    Entity.health_bars.clear()
+    Entity.enemy_list.clear()
+    Projectile.attackSprites.clear()
+    Player.Player.is_dead = False
+    Player.Player.playerInstances = 0
+    Player.Player.playerInstance = Player.Player()
+    Player.Player.currentLane = 0
+    global current_player_level
+    current_player_level = 1
+
+    Room.rooms_list.clear()
+
+    Room.reset_room()
+
+    first_room = Room()
+    second_room = Room()
+
+    Room.current_room = first_room
+    Room.next_room = second_room
+
+    Helper.LANES['left'][1] = False
+    Helper.LANES['middle'][1] = False
+    Helper.LANES['right'][1] = False
+
+    populate_current_room()
 
 
 def event_handler(game_state, player):
@@ -120,9 +129,6 @@ def event_handler(game_state, player):
     global room_is_populated
     player_action = 'idle'
 
-    if Player.Player.is_dead:
-        return 'none', 'Death_Screen'
-
     if Entity.Enemy.numberOfOnscreenEnemies == 0 and not game_is_saved:
         game_is_saved = save_game(player)
 
@@ -136,13 +142,6 @@ def event_handler(game_state, player):
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 game_state = 'Main_Menu'
-            elif event.key == K_m:
-                print_data()
-            elif event.key == K_a:
-                Player.Player.Inventory.add_item(
-                                            Item.Weapon(add_to_backpack=True)
-                                                )
-                Player.Player.Backpack.add_item(Player.Player.Inventory)
         elif event.type == MOUSEBUTTONDOWN:
             player_action = Inputs.read_mouse_down(event.pos)
         elif event.type == MOUSEBUTTONUP:
@@ -155,6 +154,15 @@ def event_handler(game_state, player):
             Player.Player.isLeavingRoom = True
             Room.advance_room()
             clean_room()
+
+            # random roll for item
+
+            if random.random() > 0.75:
+                display_messages.append('Received a weapon!')
+                Player.Player.Inventory.add_item(
+                                            Item.Weapon(add_to_backpack=True)
+                                                )
+                Player.Player.Backpack.add_item(Player.Player.Inventory)
 
     if Room.current_room.position[1] >= Room.current_room_x\
             and Player.Player.isLeavingRoom:
@@ -223,8 +231,10 @@ def renderer():
                                 Player.Player.playerPos
                                 )
 
+    # display health bars
+
     for bar in Entity.health_bars:
-        bar_background = pygame.Surface((bar.size[0], bar.size[1]))
+        bar_background = pygame.Surface((bar.size[0] + 4, bar.size[1] + 4))
         bar_background.fill((0, 0, 0))
         bar_surface = pygame.Surface((bar.size[0] *
                                       (bar.health / bar.max_health),
@@ -232,7 +242,8 @@ def renderer():
                                       ))
 
         bar_surface.fill(bar.colour)
-        Helper.DISPLAY_SURFACE.blit(bar_background, (bar.pos[0], bar.pos[1]))
+        Helper.DISPLAY_SURFACE.blit(bar_background, (bar.pos[0] - 2,
+                                                     bar.pos[1] - 2))
         Helper.DISPLAY_SURFACE.blit(bar_surface, (bar.pos[0], bar.pos[1]))
 
     for projectile in Projectile.attackSprites:
@@ -240,11 +251,15 @@ def renderer():
                                     (projectile.pos_x, projectile.pos_y)
                                     )
 
+    # display inventory if it is open
+
     if Player.Player.inventoryIsOpen:
         Helper.DISPLAY_SURFACE.blit(
             ImageFiles.images['UI']['Inventory_Background'],
             Helper.INVENTORY_POSITION
         )
+
+    # display enemies
 
     for enemy in Entity.enemy_list:
         Helper.DISPLAY_SURFACE.blit(enemy.sprite, enemy.pos)
@@ -279,18 +294,20 @@ def renderer():
         text_surface = FONT_DISPLAY.render('',
                                            False,
                                            Helper.WHITE)
-
+    # create strings for stats
     stats = [
         str('Level : ' + str(Player.Player.playerInstance.level)),
         str('HP : '
-            + str(Player.Player.playerInstance.max_health)
+            + str(Player.Player.playerInstance.health)
             + '/'
-            + str(Player.Player.playerInstance.health)),
+            + str(Player.Player.playerInstance.max_health)),
         str('XP : '
             + str(Player.Player.playerInstance.exp)
             + '/'
             + str(Player.Player.playerInstance.exp_to_level_up))
     ]
+
+    # offset text if inventory is not open
 
     vertical_offset = 500 if not Player.Player.inventoryIsOpen else 0
 
@@ -312,6 +329,8 @@ def renderer():
         stat_index += 1
 
     stats.clear()
+
+    # display inventory
 
     for slot in range(0, Player.Player.Backpack.size):
         item_surf = None if slot > len(Player.Player.Backpack.items) - 1\

@@ -1,4 +1,3 @@
-# Inventories will be defined below
 import Player
 
 
@@ -29,7 +28,8 @@ class Inventory:
         else:
             print('Inventory full')
 
-    def remove_item(self, item):  # todo: make static?
+    @staticmethod
+    def remove_item(item):
         """
         =======================================================================
         Checks if requested item is in inventory, and removes it if possible.
@@ -90,7 +90,6 @@ class Backpack(Inventory):
 
     @staticmethod
     def switch_item(item_to_remove, item_to_add):
-        # todo: I'm not quite sure what this does @powll
         """
         =======================================================================
         Equips item from backpack, and adds currently equipped item to backpack
