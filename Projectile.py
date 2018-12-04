@@ -1,8 +1,8 @@
 import pygame
 import ImageFiles
 import Helper
-import Player
 import Entity
+import Player
 
 pygame.init()
 DISPLAY_SURFACE = Helper.DISPLAY_SURFACE

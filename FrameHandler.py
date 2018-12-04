@@ -81,6 +81,11 @@ def clean_room():
 
 
 def new_game():
+    """
+    ===========================================================================
+    Resets the state of the game.
+    ===========================================================================
+    """
     Entity.health_bars.clear()
     Entity.enemy_list.clear()
     Projectile.attackSprites.clear()
@@ -152,7 +157,7 @@ def event_handler(game_state, player):
 
             # random roll for item
 
-            if random.random > 0.75:
+            if random.random() > 0.75:
                 display_messages.append('Received a weapon!')
                 Player.Player.Inventory.add_item(
                                             Item.Weapon(add_to_backpack=True)
@@ -226,6 +231,8 @@ def renderer():
                                 Player.Player.playerPos
                                 )
 
+    # display health bars
+
     for bar in Entity.health_bars:
         bar_background = pygame.Surface((bar.size[0] + 4, bar.size[1] + 4))
         bar_background.fill((0, 0, 0))
@@ -244,11 +251,15 @@ def renderer():
                                     (projectile.pos_x, projectile.pos_y)
                                     )
 
+    # display inventory if it is open
+
     if Player.Player.inventoryIsOpen:
         Helper.DISPLAY_SURFACE.blit(
             ImageFiles.images['UI']['Inventory_Background'],
             Helper.INVENTORY_POSITION
         )
+
+    # display enemies
 
     for enemy in Entity.enemy_list:
         Helper.DISPLAY_SURFACE.blit(enemy.sprite, enemy.pos)
@@ -283,7 +294,7 @@ def renderer():
         text_surface = FONT_DISPLAY.render('',
                                            False,
                                            Helper.WHITE)
-
+    # create strings for stats
     stats = [
         str('Level : ' + str(Player.Player.playerInstance.level)),
         str('HP : '
@@ -295,6 +306,8 @@ def renderer():
             + '/'
             + str(Player.Player.playerInstance.exp_to_level_up))
     ]
+
+    # offset text if inventory is not open
 
     vertical_offset = 500 if not Player.Player.inventoryIsOpen else 0
 
@@ -316,6 +329,8 @@ def renderer():
         stat_index += 1
 
     stats.clear()
+
+    # display inventory
 
     for slot in range(0, Player.Player.Backpack.size):
         item_surf = None if slot > len(Player.Player.Backpack.items) - 1\

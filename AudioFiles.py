@@ -25,7 +25,4 @@ AudioDict['killing_enemy_sounds'] = [pygame.mixer.Sound('dsfgsd.mp4'),
 AudioDict['enemy_idle_sound'] = [pygame.mixer.Sound('dsfgsd.mp4'),
                                  pygame.mixer.Sound('dsfgdssd.mp4')
                                  ]
-AudioDict['main_theme'] = [pygame.mixer.Sound(
-                                            './Resources/Audio/main_theme.wav'
-                                            )]
 

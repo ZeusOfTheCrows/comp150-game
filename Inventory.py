@@ -1,4 +1,3 @@
-# Inventories will be defined below
 import Player
 
 
@@ -29,7 +28,8 @@ class Inventory:
         else:
             print('Inventory full')
 
-    def remove_item(self, item):
+    @staticmethod
+    def remove_item(item):
         """
         =======================================================================
         Checks if requested item is in inventory, and removes it if possible.

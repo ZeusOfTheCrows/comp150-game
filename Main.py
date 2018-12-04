@@ -1,10 +1,10 @@
 import pygame
 import sys
-import FrameHandler
 import Helper
 import Menu
 import Player
 import MapGenerator
+import FrameHandler
 from Room import Room
 
 pygame.init()
@@ -27,9 +27,14 @@ prev_game_state = ''
 is_paused = False
 running = True
 game_is_saved = False
+loaded_data = None
+
+# generate first 2 rooms
 
 first_room = Room()
 second_room = Room()
+
+# load music
 
 pygame.mixer.init()
 pygame.mixer_music.load('./Resources/Audio/Sounds/main_theme.wav')

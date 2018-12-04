@@ -41,7 +41,7 @@ class Weapon(Item):
                           len(Helper.QUALITY)]
 
         # Minimum values for modifiers: the QUALITY cannot be non-existent (-1)
-        modifiers_min = [-1, -1, 0, -1, 0,0]
+        modifiers_min = [-1, -1, 0, -1, 0, 0]
 
         for i in range(0, 3):  # We iterate through the first 4 modifiers
             # We assign a random value to each modifier
@@ -118,7 +118,7 @@ class Weapon(Item):
         quality = Helper.QUALITY[modifiers[4]]
 
         # Weapon type is assigned the corresponding string
-        type = Helper.WEAPONS[weapon_type]
+        type_index = Helper.WEAPONS[weapon_type]
 
         if modifiers[1] >= 0:  # If the weapon has elemental attributes
             element = ' of '
@@ -142,7 +142,7 @@ class Weapon(Item):
 
         upgrade = ' ' + Helper.UPGRADES[modifiers[5]]
 
-        name = quality + ' ' + type + element + upgrade + bonus
+        name = quality + ' ' + type_index + element + upgrade + bonus
 
         return name
 

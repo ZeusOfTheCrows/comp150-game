@@ -225,4 +225,3 @@ class Enemy(Entity):
             enemy_list.remove(self)
         else:
             del self
-
