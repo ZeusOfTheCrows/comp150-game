@@ -20,10 +20,7 @@ health_bars = []
 class HealthBar:
 
     def __init__(self, entity):
-        self.size = [entity.sprite.get_width()
-                     if type(entity) == Enemy
-                     else entity.playerSurf.get_width(),
-                     Helper.HEALTH_BAR_SIZE[1]]
+        self.size = Helper.HEALTH_BAR_SIZE
         self.max_health = entity.health
         self.health = self.max_health
         self.parent = entity
@@ -133,7 +130,7 @@ class Enemy(Entity):
 
         self.health = self.stats['CON']['Value'] * 10 + 5 * self.level
 
-        self.sprite = ImageFiles.images['Enemy']
+        self.sprite = ImageFiles.images['Enemy']  # [random.randint(0, len(ImageFiles.images) - 1)]
 
         self.chance_to_attack = 10 + 5 * self.stats['DEX']['Value']
 
